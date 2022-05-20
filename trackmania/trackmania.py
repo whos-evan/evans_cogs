@@ -159,6 +159,7 @@ class Trackmania(commands.Cog):
                 
                 map_info = await self.req(track_exc_request_url, get_or_url="get")
                 map_info = map_info[0]
+                print(map_info)
 
                 author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
                 author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
