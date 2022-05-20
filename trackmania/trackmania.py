@@ -158,7 +158,7 @@ class Trackmania(commands.Cog):
                 track_exc_request_url = 'https://trackmania.exchange/api/maps/get_map_info/multi/' + track_id
                 
                 map_info = await self.req(track_exc_request_url, get_or_url="get")
-                map_info = map_info[0]
+                map_info = map_info
 
                 if map_info == '[]':
                     await message.delete()
