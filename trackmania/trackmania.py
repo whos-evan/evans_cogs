@@ -12,7 +12,6 @@ from redbot.core.config import Config
 
 RequestType = Literal["discord_deleted_user", "owner", "user", "user_strict"]
 
-
 class Trackmania(commands.Cog):
     """
     Trackmania cog.
@@ -56,7 +55,7 @@ class Trackmania(commands.Cog):
 
 
     @trackmania.command(name="trackinfo")
-    @trackmania.cooldown(rate=1, per=10, type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def trackinfo(ctx, track):
 
         message = await ctx.send('This may take a second.')
