@@ -33,7 +33,7 @@ class Trackmania(commands.Cog):
         self.bot.loop.create_task(self.session.close())
 
 
-    async def req(url, get_or_url):
+    async def req(self, url, get_or_url):
         headers = {
             'User-Agent': 'Trackmania Discord-Bot for Pulling Information About Maps',
             'From': 'contact@is-a.win'  # This is another valid field
@@ -79,7 +79,7 @@ class Trackmania(commands.Cog):
         
         track_exc_request_url = 'https://trackmania.exchange/api/maps/get_map_info/multi/' + track_id
         
-        map_info = await req(track_exc_request_url)
+        map_info = await self.req(track_exc_request_url)
 
         if map_info == '[]':
             await message.delete()
@@ -102,7 +102,7 @@ class Trackmania(commands.Cog):
             track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
 
             track_io_request_url = 'https://trackmania.io/api/leaderboard/map/' + track_uid[0] + '?offset=0&length=' + '1'
-            wr_info = await req(track_io_request_url)
+            wr_info = await self.req(track_io_request_url)
 
             record_names = []
             record_times = []
