@@ -43,6 +43,7 @@ class Trackmania(commands.Cog):
         if get_or_url == "url":
             async with reqtype(url, headers=headers) as req:
                 data = req.url
+                data = data[0]
                 status = req.status
         else:
             async with reqtype(url, headers=headers) as req:
