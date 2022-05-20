@@ -25,14 +25,9 @@ class Trackmania(commands.Cog):
         pre_processed = super().format_help_for_context(ctx)
         return f"{pre_processed}\nCog Version: {self.__version__}\nAuthor: {self.__author__}"
 
-    def __init__(self, bot: Red) -> None:
+    def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession()
-        self.config = Config.get_conf(
-            self,
-            identifier=933515020313178152,
-            force_registration=True,
-        )
     
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -52,6 +47,7 @@ class Trackmania(commands.Cog):
             async with reqtype(url, headers=headers) as req:
                 data = await req.text()
                 status = req.status
+        return data, status
     
     @commands.group()
     async def trackmania(self, ctx):
