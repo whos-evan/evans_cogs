@@ -80,6 +80,7 @@ class Trackmania(commands.Cog):
         track_exc_request_url = 'https://trackmania.exchange/api/maps/get_map_info/multi/' + track_id
         
         map_info = await self.req(track_exc_request_url, get_or_url="get")
+        map_info = map_info[0]
 
         if map_info == '[]':
             await message.delete()
@@ -103,6 +104,7 @@ class Trackmania(commands.Cog):
 
             track_io_request_url = 'https://trackmania.io/api/leaderboard/map/' + track_uid[0] + '?offset=0&length=' + '1'
             wr_info = await self.req(track_io_request_url, get_or_url="get")
+            wr_info = wr_info[0]
 
             record_names = []
             record_times = []
