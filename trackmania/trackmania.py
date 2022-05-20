@@ -149,8 +149,7 @@ class Trackmania(commands.Cog):
 
             async def random_track():
                 random_url = await self.req('https://trackmania.exchange/mapsearch2/search?random=1', get_or_url="url")
-                print(random_url)
-                random_url = str(random_url)
+                random_url = str(random_url[0])
 
                 track_id = random_url.partition('/maps/')[2]
                 
@@ -159,7 +158,6 @@ class Trackmania(commands.Cog):
                 track_exc_request_url = 'https://trackmania.exchange/api/maps/get_map_info/multi/' + track_id
                 
                 map_info = await self.req(track_exc_request_url, get_or_url="get")
-                print(map_info)
                 map_info = map_info[0]
 
                 author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
