@@ -20,6 +20,10 @@ class Trackmania(commands.Cog):
     __version__ = "0.0.1 beta"
     __author__ = "evan"
 
+    def format_help_for_context(self, ctx):
+        """Thanks Sinbad."""
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\nCog Version: {self.__version__}\nAuthor: {self.__author__}"
 
     def __init__(self, bot: Red) -> None:
         self.bot = bot
@@ -51,12 +55,13 @@ class Trackmania(commands.Cog):
     
     @commands.group()
     async def trackmania(self, ctx):
-        """Group for Trackmania track info.a"""
+        """Group for Trackmania track info."""
 
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def trackinfo(ctx, track):
+        """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
 
