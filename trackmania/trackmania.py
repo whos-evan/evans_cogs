@@ -149,6 +149,7 @@ class Trackmania(commands.Cog):
 
             async def random_track():
                 random_url = await self.req('https://trackmania.exchange/mapsearch2/search?random=1', get_or_url="url")
+                print(random_url)
                 random_url = str(random_url)
 
                 track_id = random_url.partition('/maps/')[2]
