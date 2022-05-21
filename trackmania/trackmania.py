@@ -217,7 +217,7 @@ class Trackmania(commands.Cog):
                     embed.set_thumbnail(url=track_photo)
                     embeds.append(embed)
 
-            for x in range(1, number):
+            for x in range(0, number):
                 await random_track()
 
             await message.delete()
