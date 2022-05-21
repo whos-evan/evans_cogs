@@ -20,7 +20,7 @@ class Trackmania(commands.Cog):
 
     def __init__(self, bot: Red):
         super().__init__()
-        self.bot = bot
+#        self.bot = bot
         self.session = aiohttp.ClientSession()
     
     def format_help_for_context(self, ctx):
@@ -55,7 +55,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(ctx, track: str):
+    async def trackinfo(self, ctx, track: str):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
