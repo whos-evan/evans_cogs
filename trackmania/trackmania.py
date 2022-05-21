@@ -124,7 +124,7 @@ class Trackmania(commands.Cog):
                     time = int(time[record_num])
                     time = time / 1000
                     record_times.append(time)
-                except
+                except:
                     time = "No Record"
                     record_times.append(time)
 
@@ -211,7 +211,7 @@ class Trackmania(commands.Cog):
                     time = int(time[record_num])
                     time = time / 1000
                     record_times.append(time)
-                except
+                except:
                     time = "No Record"
                     record_times.append(time)
                     
@@ -290,25 +290,26 @@ class Trackmania(commands.Cog):
                     record_names = []
                     record_times = []
 
-                async def findrecord(record_num):
-                    name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
-                    try:
-                        name = name[record_num]
-                        record_names.append(name)
-                    except:
-                        name = "No Record"
-                        record_names.append(name)
-                    
-                    time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
-                    try:
-                        time = int(time[record_num])
-                        time = time / 1000
-                        record_times.append(time)
-                    except
-                        time = "No Record"
-                        record_times.append(time)
+                    async def findrecord(record_num):
+                        name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
+                        try:
+                            name = name[record_num]
+                            record_names.append(name)
+                        except:
+                            name = "No Record"
+                            record_names.append(name)
+                        
+                        time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
+                        try:
+                            time = int(time[record_num])
+                            time = time / 1000
+                            record_times.append(time)
+                        except:
+                            time = "No Record"
+                            record_times.append(time)
 
                     await findrecord(0)
+
                     wr_time = '``' + record_names[0] + '`` set a time of ``' + str(record_times[0]) + '``'
 
                     embed=discord.Embed(title=name[0], url=url, description=track_desc)
@@ -320,6 +321,7 @@ class Trackmania(commands.Cog):
                     embed.add_field(name="Track's Rating", value=rating[0], inline=True)
                     embed.set_thumbnail(url=track_photo)
                     embeds.append(embed)
+
                 except:
                     embed=discord.Embed(title="Error", description="There was an error getting information about the track.")
                     embed.add_field(name="Author's Username", value="Null", inline=True)
