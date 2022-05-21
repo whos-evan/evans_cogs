@@ -214,6 +214,9 @@ class Trackmania(commands.Cog):
                     record_times.append(time)
                     
             embed=discord.Embed(title=name[0], url=url)
+            embed.add_field(name="Author's Username", value=author_name[0], inline=True)
+            embed.add_field(name="Author's Time", value=author_time, inline=True)
+            
             for x in range(0, num):
                 await findrecord(x)
                 wr_time = '``' + record_names[x] + '`` set a time of ``' + str(record_times[x]) + '``'
@@ -230,9 +233,6 @@ class Trackmania(commands.Cog):
                 place = ordinial(y) + " Place" + extra
                 embed.add_field(name=place, value=wr_time, inline=True)
 
-
-            embed.add_field(name="Author's Username", value=author_name[0], inline=False)
-            embed.add_field(name="Author's Time", value=author_time, inline=True)
             embed.set_thumbnail(url=track_photo)
 
             await message.delete()
