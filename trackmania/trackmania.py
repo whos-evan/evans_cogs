@@ -114,6 +114,7 @@ class Trackmania(commands.Cog):
                 name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
                 if not name:
                     name = ["No Record"]
+                    record_names.append(name)
                 else:
                     name = name[record_num]
                     record_names.append(name)
@@ -121,6 +122,7 @@ class Trackmania(commands.Cog):
                 time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
                 if not time:
                     time = ["No Record"]
+                    record_times.append(time)
                 else:
                     time = int(time[record_num])
                     time = time / 1000
@@ -194,6 +196,7 @@ class Trackmania(commands.Cog):
                         name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
                         if not name:
                             name = ["No Record"]
+                            record_names.append(name)
                         else:
                             name = name[record_num]
                             record_names.append(name)
@@ -201,6 +204,7 @@ class Trackmania(commands.Cog):
                         time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
                         if not time:
                             time = ["No Record"]
+                            record_times.append(time)
                         else:
                             time = int(time[record_num])
                             time = time / 1000
