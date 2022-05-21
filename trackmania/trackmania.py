@@ -135,7 +135,7 @@ class Trackmania(commands.Cog):
             embed.add_field(name="Track Length", value=length[0], inline=True)
             embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
             embed.add_field(name="Track's Rating", value=rating[0], inline=True)
-            embed.set_thumbnail(url=track_photo)
+            embed.set_image(url=track_photo)
 
             await message.delete()
             await ctx.send(embed=embed)
@@ -232,7 +232,7 @@ class Trackmania(commands.Cog):
                 place = ordinial(y) + " Place" + extra
                 embed.add_field(name=place, value=wr_time, inline=True)
 
-            embed.set_thumbnail(url=track_photo)
+            embed.set_image(url=track_photo)
 
             await message.delete()
             await ctx.send(embed=embed)
@@ -316,7 +316,7 @@ class Trackmania(commands.Cog):
                     embed.add_field(name="Track Length", value=length[0], inline=True)
                     embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
                     embed.add_field(name="Track's Rating", value=rating[0], inline=True)
-                    embed.set_thumbnail(url=track_photo)
+                    embed.set_image(url=track_photo)
                     embeds.append(embed)
 
                 except:
@@ -327,7 +327,7 @@ class Trackmania(commands.Cog):
                     embed.add_field(name="Track Length", value="Null", inline=True)
                     embed.add_field(name="Track's Difficulty", value="Null", inline=True)
                     embed.add_field(name="Track's Rating", value="Null", inline=True)
-                    embed.set_thumbnail(url=track_photo)
+                    embed.set_image(url=track_photo)
                     embeds.append(embed)
 
             await asyncio.gather(*[random_track() for i in range(number)])
