@@ -178,6 +178,8 @@ class Trackmania(commands.Cog):
             author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
             author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
 
+            track_photo = str('https://trackmania.exchange/tracks/screenshot/normal/' + track_id)
+
             author_time = int(author_time[0])
             author_time = author_time / 1000
             author_time = str(author_time)
@@ -216,13 +218,22 @@ class Trackmania(commands.Cog):
                 await findrecord(x)
                 wr_time = '``' + record_names[x] + '`` set a time of ``' + str(record_times[x]) + '``'
                 y = x + 1
+                if y == 1:
+                    extra = '🥇'
+                elif y == 2:
+                    extra = '🥈'
+                elif y == 3:
+                    extra = '🥉'
+                else:
+                    extra = ''
                 ordinial = lambda y: "%d%s" % (y,"tsnrhtdd"[(y//10%10!=1)*(y%10<4)*y%10::4])
-                place = ordinial(y) + " Place"
+                place = ordinial(y) + " Place" + extra
                 embed.add_field(name=place, value=wr_time, inline=True)
 
 
-            embed.add_field(name="Author's Username", value=author_name[0], inline=True)
+            embed.add_field(name="Author's Username", value=author_name[0], inline=False)
             embed.add_field(name="Author's Time", value=author_time, inline=True)
+            embed.set_thumbnail(url=track_photo)
 
             await message.delete()
             await ctx.send(embed=embed)
