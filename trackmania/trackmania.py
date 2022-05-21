@@ -143,6 +143,89 @@ class Trackmania(commands.Cog):
             await message.delete()
             await ctx.send(embed=embed)
 
+    @trackmania.command(name="worldrecords")
+    @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
+    async def trackinfo(self, ctx, track, num: int):
+        """Grab a Trackmania.Exchange/Trackmania.Io WR information."""
+
+        message = await ctx.send('This may take a second.')
+
+        async def if_integer(string):
+            try: 
+                int(string)
+                return True
+            except ValueError:
+                return False
+
+        if await if_integer(track) is True:
+            track_id = str(track)
+        elif 'https://trackmania.exchange/maps/' in track:
+            track_id = track.partition('/maps/')[2]
+        else:
+            track_id = '-1'
+        
+        url = 'https://trackmania.exchange/maps/' + track_id
+        
+        track_exc_request_url = 'https://trackmania.exchange/api/maps/get_map_info/multi/' + track_id
+        
+        map_info = await self.req(track_exc_request_url, get_or_url="get")
+        map_info = map_info[0]
+
+        if map_info == '[]':
+            await message.delete()
+            await ctx.send("Bruv the thing that you put in the thingy doesn't have a track.")
+        else:
+            author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
+            author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
+
+            author_time = int(author_time[0])
+            author_time = author_time / 1000
+            author_time = str(author_time)
+
+            name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
+
+            track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
+
+            track_io_request_url = 'https://trackmania.io/api/leaderboard/map/' + track_uid[0] + '?offset=0&length=' + str(num)
+            wr_info = await self.req(track_io_request_url, get_or_url="get")
+            wr_info = wr_info[0]
+
+            record_names = []
+            record_times = []
+
+            async def findrecord(record_num):
+                name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
+                if not name:
+                    name = "No Record"
+                    record_names.append(name)
+                else:
+                    name = name[record_num]
+                    record_names.append(name)
+                
+                time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
+                if not time:
+                    time = "No Record"
+                    record_times.append(time)
+                else:
+                    time = int(time[record_num])
+                    time = time / 1000
+                    record_times.append(time)
+                    
+            embed=discord.Embed(title=name[0], url=url)
+            for x in range(0, num):
+                await findrecord(x)
+                wr_time = '``' + record_names[x] + '`` set a time of ``' + str(record_times[x]) + '``'
+                embed.add_field(name="WR Time", value=wr_time, inline=True)
+
+
+
+            embed.add_field(name="Author's Username", value=author_name[0], inline=True)
+            embed.add_field(name="Author's Time", value=author_time, inline=True)
+
+            await message.delete()
+            await ctx.send(embed=embed)
+
+
     @trackmania.command(name="randomtrack")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def randomtrack(self, ctx, number: int):
