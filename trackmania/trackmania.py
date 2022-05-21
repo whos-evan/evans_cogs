@@ -33,7 +33,7 @@ class Trackmania(commands.Cog):
         self.bot.loop.create_task(self.session.close())
 
 
-    async def req(self, url, get_or_url):
+    async def _req(self, url, get_or_url):
         headers = {
             'User-Agent': 'Trackmania Discord-Bot for Pulling Information About Maps',
             'From': 'contact@is-a.win'  # This is another valid field
@@ -55,7 +55,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, track: str):
+    async def trackinfo(ctx, track: str):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
