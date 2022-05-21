@@ -186,13 +186,19 @@ class Trackmania(commands.Cog):
 
                     async def findrecord(record_num):
                         name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
-                        name = name[record_num]
-                        record_names.append(name)
-
+                        if not name:
+                            name = "No Record"
+                        else:
+                            name = name[record_num]
+                            record_names.append(name)
+                        
                         time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
-                        time = int(time[record_num])
-                        time = time / 1000
-                        record_times.append(time)
+                        if not time:
+                            time = "No Record"
+                        else:
+                            time = int(time[record_num])
+                            time = time / 1000
+                            record_times.append(time)
 
                     await findrecord(0)
                     wr_time = '``' + record_names[0] + '`` set a time of ``' + str(record_times[0]) + '``'
