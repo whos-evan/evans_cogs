@@ -142,7 +142,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="worldrecords")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, track, num: int):
+    async def worldrecords(self, ctx, track, num: int):
         """Grab a Trackmania.Exchange/Trackmania.Io WR information."""
 
         message = await ctx.send('This may take a second.')
