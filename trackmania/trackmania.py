@@ -112,20 +112,20 @@ class Trackmania(commands.Cog):
 
             async def findrecord(record_num):
                 name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
-                if not name:
-                    name = "No Record"
-                    record_names.append(name)
-                else:
+                try:
                     name = name[record_num]
+                    record_names.append(name)
+                except:
+                    name = "No Record"
                     record_names.append(name)
                 
                 time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
-                if not time:
-                    time = "No Record"
-                    record_times.append(time)
-                else:
+                try:
                     time = int(time[record_num])
                     time = time / 1000
+                    record_times.append(time)
+                except
+                    time = "No Record"
                     record_times.append(time)
 
             await findrecord(0)
@@ -290,23 +290,23 @@ class Trackmania(commands.Cog):
                     record_names = []
                     record_times = []
 
-                    async def findrecord(record_num):
-                        name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
-                        if not name:
-                            name = "No Record"
-                            record_names.append(name)
-                        else:
-                            name = name[record_num]
-                            record_names.append(name)
-                        
-                        time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
-                        if not time:
-                            time = "No Record"
-                            record_times.append(time)
-                        else:
-                            time = int(time[record_num])
-                            time = time / 1000
-                            record_times.append(time)
+                async def findrecord(record_num):
+                    name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
+                    try:
+                        name = name[record_num]
+                        record_names.append(name)
+                    except:
+                        name = "No Record"
+                        record_names.append(name)
+                    
+                    time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
+                    try:
+                        time = int(time[record_num])
+                        time = time / 1000
+                        record_times.append(time)
+                    except
+                        time = "No Record"
+                        record_times.append(time)
 
                     await findrecord(0)
                     wr_time = '``' + record_names[0] + '`` set a time of ``' + str(record_times[0]) + '``'
