@@ -55,7 +55,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx: None, track):
+    async def trackinfo(self, ctx, track: str):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
