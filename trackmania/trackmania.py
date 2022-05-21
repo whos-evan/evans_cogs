@@ -18,7 +18,8 @@ class Trackmania(commands.Cog):
     __version__ = "0.0.1 beta"
     __author__ = "evan"
 
-    def __init__(self, bot):
+    def __init__(self, bot: Red):
+        super().__init__()
         self.bot = bot
         self.session = aiohttp.ClientSession()
     
@@ -54,7 +55,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, *, track):
+    async def trackinfo(self, ctx: commands.Context, track):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
