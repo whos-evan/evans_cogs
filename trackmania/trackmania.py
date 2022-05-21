@@ -54,7 +54,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, *, track):
+    async def trackinfo(self, ctx, track):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
@@ -107,7 +107,7 @@ class Trackmania(commands.Cog):
             record_names = []
             record_times = []
 
-            async def findrecord(record_num):
+            async def findrecord1(record_num):
                 name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
                 try:
                     name = name[record_num]
@@ -125,7 +125,7 @@ class Trackmania(commands.Cog):
                     time = "No Record"
                     record_times.append(time)
 
-            await findrecord(0)
+            await findrecord1(0)
             wr_time = '``' + record_names[0] + '`` set a time of ``' + str(record_times[0]) + '``'
 
             embed=discord.Embed(title=name[0], url=url, description=track_desc)
@@ -194,7 +194,7 @@ class Trackmania(commands.Cog):
             record_names = []
             record_times = []
 
-            async def findrecord(record_num):
+            async def findrecord2(record_num):
                 name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
                 try:
                     name = name[record_num]
@@ -217,7 +217,7 @@ class Trackmania(commands.Cog):
             embed.add_field(name="Author's Time", value=author_time, inline=True)
             
             for x in range(0, num):
-                await findrecord(x)
+                await findrecord2(x)
                 wr_time = '``' + record_names[x] + '`` set a time of ``' + str(record_times[x]) + '``'
                 y = x + 1
                 if y == 1:
