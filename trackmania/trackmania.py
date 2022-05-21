@@ -1,6 +1,3 @@
-from random import random
-from typing import Literal
-
 # other shit
 import aiohttp
 import asyncio
@@ -12,8 +9,6 @@ from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
-
-RequestType = Literal["discord_deleted_user", "owner", "user", "user_strict"]
 
 
 class Trackmania(commands.Cog):
@@ -126,7 +121,7 @@ class Trackmania(commands.Cog):
             record_names = []
             record_times = []
 
-            async def findrecord(record_num):
+            async def findrecord1(record_num):
                 name = re.findall(
                     '(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info
                 )
@@ -146,7 +141,7 @@ class Trackmania(commands.Cog):
                     time = "No Record"
                     record_times.append(time)
 
-            await findrecord(0)
+            await findrecord1(0)
             wr_time = (
                 "``"
                 + record_names[0]
@@ -162,14 +157,14 @@ class Trackmania(commands.Cog):
             embed.add_field(name="Track Length", value=length[0], inline=True)
             embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
             embed.add_field(name="Track's Rating", value=rating[0], inline=True)
-            embed.set_thumbnail(url=track_photo)
+            embed.set_image(url=track_photo)
 
             await message.delete()
             await ctx.send(embed=embed)
 
     @trackmania.command(name="worldrecords")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, track, num: int):
+    async def worldrecords(self, ctx, track, num: int):
         """Grab a Trackmania.Exchange/Trackmania.Io WR information."""
 
         message = await ctx.send("This may take a second.")
@@ -235,7 +230,7 @@ class Trackmania(commands.Cog):
             record_names = []
             record_times = []
 
-            async def findrecord(record_num):
+            async def findrecord2(record_num):
                 name = re.findall(
                     '(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info
                 )
@@ -260,7 +255,7 @@ class Trackmania(commands.Cog):
             embed.add_field(name="Author's Time", value=author_time, inline=True)
 
             for x in range(0, num):
-                await findrecord(x)
+                await findrecord2(x)
                 wr_time = (
                     "``"
                     + record_names[x]
@@ -284,7 +279,7 @@ class Trackmania(commands.Cog):
                 place = ordinial(y) + " Place" + extra
                 embed.add_field(name=place, value=wr_time, inline=True)
 
-            embed.set_thumbnail(url=track_photo)
+            embed.set_image(url=track_photo)
 
             await message.delete()
             await ctx.send(embed=embed)
@@ -409,7 +404,7 @@ class Trackmania(commands.Cog):
                         name="Track's Difficulty", value=difficulty[0], inline=True
                     )
                     embed.add_field(name="Track's Rating", value=rating[0], inline=True)
-                    embed.set_thumbnail(url=track_photo)
+                    embed.set_image(url=track_photo)
                     embeds.append(embed)
 
                 except:
@@ -425,7 +420,7 @@ class Trackmania(commands.Cog):
                         name="Track's Difficulty", value="Null", inline=True
                     )
                     embed.add_field(name="Track's Rating", value="Null", inline=True)
-                    embed.set_thumbnail(url=track_photo)
+                    embed.set_image(url=track_photo)
                     embeds.append(embed)
 
             await asyncio.gather(*[random_track() for i in range(number)])
