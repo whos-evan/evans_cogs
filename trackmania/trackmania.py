@@ -334,7 +334,7 @@ class Trackmania(commands.Cog):
                     embed.set_thumbnail(url=track_photo)
                     embeds.append(embed)
 
-            lol = await asyncio.gather(*[random_track() for i in range(number)])
+            await asyncio.gather(*[random_track() for i in range(number)])
 
             await message.delete()
             await menu(ctx, embeds, DEFAULT_CONTROLS)
