@@ -3,6 +3,7 @@ from typing import Literal
 
 # other shit
 import aiohttp
+import asyncio
 import json
 import re
 
@@ -333,8 +334,7 @@ class Trackmania(commands.Cog):
                     embed.set_thumbnail(url=track_photo)
                     embeds.append(embed)
 
-            async for x in range(0, number):
-                await random_track()
+            for f in asyncio.as_completed([random_track() for i in range(number)])
 
             await message.delete()
             await menu(ctx, embeds, DEFAULT_CONTROLS)
