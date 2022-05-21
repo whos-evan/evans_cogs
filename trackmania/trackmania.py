@@ -13,8 +13,6 @@ from redbot.core.bot import Red
 from redbot.core.config import Config
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
-RequestType = Literal["discord_deleted_user", "owner", "user", "user_strict"]
-
 class Trackmania(commands.Cog):
     """
     Trackmania cog.
