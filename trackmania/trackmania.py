@@ -163,6 +163,8 @@ class Trackmania(commands.Cog):
             track_id = track.partition('/maps/')[2]
         else:
             track_id = '-1'
+
+        if num > 23: track_id = '-1'
         
         url = 'https://trackmania.exchange/maps/' + track_id
         
@@ -173,7 +175,7 @@ class Trackmania(commands.Cog):
 
         if map_info == '[]':
             await message.delete()
-            await ctx.send("Bruv the thing that you put in the thingy doesn't have a track.")
+            await ctx.send("You did something wrong or the bot did something wrong. It's very likely that it is your fault however.")
         else:
             author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
             author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
@@ -215,7 +217,7 @@ class Trackmania(commands.Cog):
                     
             embed=discord.Embed(title=name[0], url=url)
             embed.add_field(name="Author's Username", value=author_name[0], inline=True)
-            embed.add_field(name="Author's Time", value=author_time, inline=False)
+            embed.add_field(name="Author's Time", value=author_time, inline=True)
             
             for x in range(0, num):
                 await findrecord(x)
