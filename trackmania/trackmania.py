@@ -217,7 +217,8 @@ class Trackmania(commands.Cog):
                 wr_time = '``' + record_names[x] + '`` set a time of ``' + str(record_times[x]) + '``'
                 y = x + 1
                 ordinial = lambda y: "%d%s" % (y,"tsnrhtdd"[(y//10%10!=1)*(y%10<4)*y%10::4])
-                embed.add_field(name= ordinial + " Place", value=wr_time, inline=True)
+                place = str(ordinial) + " Place"
+                embed.add_field(name=place, value=wr_time, inline=True)
 
 
             embed.add_field(name="Author's Username", value=author_name[0], inline=True)
