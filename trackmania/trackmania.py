@@ -215,10 +215,9 @@ class Trackmania(commands.Cog):
             for x in range(0, num):
                 await findrecord(x)
                 wr_time = '``' + record_names[x] + '`` set a time of ``' + str(record_times[x]) + '``'
-                x = x + 1
-                ordinial = lambda x:`x`+'tsnrhtdd'[x%5*(x%100^15>4>x%10)::4]
-                embed.add_field(name="WR Time" + ordinial, value=wr_time, inline=True)
-
+                y = x + 1
+                ordinial = lambda y: "%d%s" % (y,"tsnrhtdd"[(y//10%10!=1)*(y%10<4)*y%10::4])
+                embed.add_field(name= ordinial + " Place", value=wr_time, inline=True)
 
 
             embed.add_field(name="Author's Username", value=author_name[0], inline=True)
