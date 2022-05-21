@@ -20,7 +20,7 @@ class Trackmania(commands.Cog):
 
     def __init__(self, bot: Red):
         super().__init__()
-#        self.bot = bot
+        self.bot = bot
         self.session = aiohttp.ClientSession()
     
     def format_help_for_context(self, ctx):
@@ -33,7 +33,7 @@ class Trackmania(commands.Cog):
         self.bot.loop.create_task(self.session.close())
 
 
-    async def _req(self, url, get_or_url):
+    async def req(self, url, get_or_url):
         headers = {
             'User-Agent': 'Trackmania Discord-Bot for Pulling Information About Maps',
             'From': 'contact@is-a.win'  # This is another valid field
@@ -53,9 +53,9 @@ class Trackmania(commands.Cog):
     async def trackmania(self, ctx):
         """Group for Trackmania track info."""
 
-    @trackmania.command(name="trackinfo")
+    @trackmania.command(name="trackinfo", pass_context=True)
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, track: str):
+    async def trackinfo(ctx, track: str):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
