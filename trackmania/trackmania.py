@@ -18,8 +18,7 @@ class Trackmania(commands.Cog):
     __version__ = "0.0.1 beta"
     __author__ = "evan"
 
-    def __init__(self, bot: Red):
-        super().__init__()
+    def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession()
     
@@ -53,9 +52,9 @@ class Trackmania(commands.Cog):
     async def trackmania(self, ctx):
         """Group for Trackmania track info."""
 
-    @trackmania.command(name="trackinfo", pass_context=True)
+    @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(ctx, track: str):
+    async def trackinfo(self, ctx, track):
         """Grab a Trackmania.Exchange's track information."""
 
         message = await ctx.send('This may take a second.')
@@ -143,7 +142,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="worldrecords")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def trackinfo(self, ctx, track, num: int):
+    async def trackinfo(self, ctx, track1, num: int):
         """Grab a Trackmania.Exchange/Trackmania.Io WR information."""
 
         message = await ctx.send('This may take a second.')
@@ -155,10 +154,10 @@ class Trackmania(commands.Cog):
             except ValueError:
                 return False
 
-        if await if_integer(track) is True:
-            track_id = str(track)
-        elif 'https://trackmania.exchange/maps/' in track:
-            track_id = track.partition('/maps/')[2]
+        if await if_integer(track1) is True:
+            track_id = str(track1)
+        elif 'https://trackmania.exchange/maps/' in track1:
+            track_id = track1.partition('/maps/')[2]
         else:
             track_id = '-1'
 
