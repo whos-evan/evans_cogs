@@ -184,7 +184,9 @@ class Trackmania(commands.Cog):
             track_id = "-1"
 
         if num > 23:
-            track_id = "-1"
+            num = 23
+        elif num < 0:
+            num = 5 # this is so that people don't put a stupid number that the bot can't parse
 
         url = "https://trackmania.exchange/maps/" + track_id
 
