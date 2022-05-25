@@ -96,9 +96,7 @@ class Trackmania(commands.Cog):
             )
         else:
             author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
-            author_time = re.findall(
-                '(?<="AuthorTime":).*(?=,"ParserVersion")', map_info
-            )
+            author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
 
             author_time = int(author_time[0])
             author_time = author_time / 1000
@@ -138,7 +136,8 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
-                    record_times.append(await self.time_convert(time))
+                    time = await self.time_convert(time)
+                    record_times.append(time)
                 except:
                     time = "No Record"
                     record_times.append(time)
@@ -245,7 +244,8 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
-                    record_times.append(await self.time_convert(time))
+                    time = await self.time_convert(time)
+                    record_times.append(time)
                 except:
                     time = "No Record"
                     record_times.append(time)
@@ -364,7 +364,8 @@ class Trackmania(commands.Cog):
                         try:
                             time = int(time[record_num])
                             time = time / 1000
-                            record_times.append(await self.time_convert(time))
+                            time = await self.time_convert(time)
+                            record_times.append(time)
                         except:
                             time = "No Record"
                             record_times.append(time)
