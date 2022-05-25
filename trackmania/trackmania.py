@@ -138,7 +138,7 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
-                    record_times.append(self.time_convert(time))
+                    record_times.append(await self.time_convert(time))
                 except:
                     time = "No Record"
                     record_times.append(time)
@@ -230,7 +230,7 @@ class Trackmania(commands.Cog):
             record_names = []
             record_times = []
 
-            async def findrecord1(record_num):
+            async def findrecord(record_num):
                 name = re.findall(
                     '(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info
                 )
@@ -245,7 +245,7 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
-                    record_times.append(self.time_convert(time))
+                    record_times.append(await self.time_convert(time))
                 except:
                     time = "No Record"
                     record_times.append(time)
@@ -255,7 +255,7 @@ class Trackmania(commands.Cog):
             embed.add_field(name="Author's Time", value=author_time, inline=True)
 
             for x in range(0, num):
-                await findrecord1(x)
+                await findrecord(x)
                 wr_time = (
                     "``"
                     + record_names[x]
@@ -349,7 +349,7 @@ class Trackmania(commands.Cog):
                     record_names = []
                     record_times = []
 
-                    async def findrecord2(record_num):
+                    async def findrecord(record_num):
                         name = re.findall(
                             '(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info
                         )
@@ -364,12 +364,12 @@ class Trackmania(commands.Cog):
                         try:
                             time = int(time[record_num])
                             time = time / 1000
-                            record_times.append(self.time_convert(time))
+                            record_times.append(await self.time_convert(time))
                         except:
                             time = "No Record"
                             record_times.append(time)
 
-                    await findrecord2(0)
+                    await findrecord(0)
 
                     wr_time = (
                         "``"
