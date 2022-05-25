@@ -53,6 +53,8 @@ class Trackmania(commands.Cog):
         seconds = seconds % 60
         milliseconds = seconds * 1000
         return f"{minutes}:{seconds:02d}.{milliseconds:03d}"
+    
+    print(time_convert(13458))
 
 
     @commands.group()
@@ -137,7 +139,6 @@ class Trackmania(commands.Cog):
                     time = int(time[record_num])
                     time = time / 1000
                     time = await self.time_convert(time)
-                    print(time)
                     record_times.append(time)
                 except:
                     time = "No Record"
