@@ -143,7 +143,7 @@ class Trackmania(commands.Cog):
                     record_times.append(time)
 
             await findrecord(0)
-            print(await self.time_convert(348597))
+            print(await self.time_convert(seconds=348597))
             wr_time = (
                 "``"
                 + record_names[0]
