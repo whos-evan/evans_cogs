@@ -47,14 +47,12 @@ class Trackmania(commands.Cog):
                 status = req.status
         return data, status
 
-    # turn seconds into minutes and seconds and milliseconds in a readable format
+    # turn seconds into minutes and seconds and milliseconds in a string
     async def time_convert(seconds):
         minutes = seconds // 60
         seconds = seconds % 60
-        milliseconds = seconds * 1000
-        return f"{minutes}:{seconds:02d}.{milliseconds:03d}"
-    
-    print(time_convert(13458))
+        milliseconds = round((seconds - int(seconds)) * 1000)
+        return f"{minutes}:{seconds}.{milliseconds}"
 
 
     @commands.group()
