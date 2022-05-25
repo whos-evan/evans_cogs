@@ -137,6 +137,7 @@ class Trackmania(commands.Cog):
                     time = int(time[record_num])
                     time = time / 1000
                     time = await self.time_convert(time)
+                    print(time)
                     record_times.append(time)
                 except:
                     time = "No Record"
