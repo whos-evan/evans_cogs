@@ -47,14 +47,6 @@ class Trackmania(commands.Cog):
                 status = req.status
         return data, status
 
-    # turn seconds into minutes and seconds and milliseconds in a string
-    async def time_convert(seconds):
-        minutes = seconds // 60
-        seconds = seconds % 60
-        milliseconds = round((seconds - int(seconds)) * 1000)
-        return f"{minutes}:{seconds}.{milliseconds}"
-
-
     @commands.group()
     async def trackmania(self, ctx):
         """Group for Trackmania track info."""
@@ -136,15 +128,12 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
-                    time = await self.time_convert(time)
                     record_times.append(time)
                 except:
                     time = "No Record"
                     record_times.append(time)
 
             await findrecord(0)
-            test = await self.time_convert(348597)
-            print(test)
             wr_time = (
                 "``"
                 + record_names[0]
@@ -246,7 +235,6 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
-                    time = await self.time_convert(time)
                     record_times.append(time)
                 except:
                     time = "No Record"
@@ -366,7 +354,6 @@ class Trackmania(commands.Cog):
                         try:
                             time = int(time[record_num])
                             time = time / 1000
-                            time = await self.time_convert(time)
                             record_times.append(time)
                         except:
                             time = "No Record"
