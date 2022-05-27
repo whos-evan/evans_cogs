@@ -9,7 +9,9 @@
         "evan_"
     ],
     "required_cogs": {},
-    "requirements": [],
+    "requirements": [
+        "openai"
+    ],
     "tags": [
         "openai",
         "api"
