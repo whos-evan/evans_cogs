@@ -58,6 +58,7 @@ class Trackmania(commands.Cog):
             author_time = author_time / 1000
             author_time = datetime.timedelta(seconds=author_time)
             author_time = str(author_time)
+            author_time = author_time[:-3]
 
             name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
             length = re.findall('(?<="LengthName":").*(?=","DifficultyName")', map_info)
@@ -94,6 +95,8 @@ class Trackmania(commands.Cog):
                     time = int(time[record_num])
                     time = time / 1000
                     time = datetime.timedelta(seconds=time)
+                    time = str(time)
+                    time = time[:-3]
                     record_times.append(time)
                 except:
                     time = "No Record"
