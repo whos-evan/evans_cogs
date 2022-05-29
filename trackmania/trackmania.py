@@ -1,8 +1,8 @@
 # other shit
 import aiohttp
 import asyncio
-import json
 import re
+import datetime
 
 import discord
 from redbot.core import commands
@@ -56,6 +56,7 @@ class Trackmania(commands.Cog):
 
             author_time = int(author_time[0])
             author_time = author_time / 1000
+            author_time = datetime.timedelta(seconds=author_time)
             author_time = str(author_time)
 
             name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
@@ -92,6 +93,7 @@ class Trackmania(commands.Cog):
                 try:
                     time = int(time[record_num])
                     time = time / 1000
+                    time = datetime.timedelta(seconds=time)
                     record_times.append(time)
                 except:
                     time = "No Record"
