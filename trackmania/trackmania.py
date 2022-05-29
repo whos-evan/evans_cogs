@@ -143,7 +143,7 @@ class Trackmania(commands.Cog):
             map_info = await self.req(track_exc_request_url, get_or_url="get")
             map_info = map_info[0]
 
-            embed = await self.track_embed(map_info, track_ids[i])
+            embed = await self.track_embed(map_info=map_info, track_id=track_ids[i])
             embeds.append(embed)
 
         await message.delete()
