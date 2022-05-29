@@ -131,6 +131,7 @@ class Trackmania(commands.Cog):
         message = await ctx.send("This may take a second.")
 
         full_search = await self.req("https://trackmania.exchange/tracksearch2/search?api=on&format=json&trackname=" + search, get_or_url="get")
+        full_search = full_search[0]
         track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
 
         embeds = []
