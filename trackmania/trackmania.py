@@ -123,6 +123,31 @@ class Trackmania(commands.Cog):
     async def trackmania(self, ctx):
         """Group for Trackmania track info."""
 
+    @trackmania.command(name="tracksearch")
+    @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
+    async def tracksearch(self, ctx, search: str):
+        """Search for a track on Trackmania.exchange."""
+
+        message = await ctx.send("This may take a second.")
+
+        full_search = await self.req("https://trackmania.exchange/tracksearch2/search?api=on&format=json&trackname=" + search, get_or_url="get")
+        track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
+
+        embeds = []
+        for i in track_ids:
+            track_exc_request_url = (
+                "https://trackmania.exchange/api/maps/get_map_info/multi/" + track_ids[i]
+            )
+
+            map_info = await self.req(track_exc_request_url, get_or_url="get")
+            map_info = map_info[0]
+
+            embed = await self.track_embed(map_info, track_ids[i])
+            embeds.append(embed)
+
+        await message.delete()
+        await menu(ctx, embeds, DEFAULT_CONTROLS)
+
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def trackinfo(self, ctx, track):
