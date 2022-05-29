@@ -125,7 +125,7 @@ class Trackmania(commands.Cog):
 
     @trackmania.command(name="tracksearch")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
-    async def tracksearch(self, ctx, search: str):
+    async def tracksearch(self, ctx, *, search: str):
         """Search for a track on Trackmania.exchange."""
 
         message = await ctx.send("This may take a second.")
