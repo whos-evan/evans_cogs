@@ -160,30 +160,32 @@ class Trackmania(commands.Cog):
         """Grab a Trackmania.Exchange's track information."""
 
         await ctx.trigger_typing()
+        try:
+            async def if_integer(string):
+                try:
+                    int(string)
+                    return True
+                except ValueError:
+                    return False
 
-        async def if_integer(string):
-            try:
-                int(string)
-                return True
-            except ValueError:
-                return False
+            if await if_integer(track) is True:
+                track_id = str(track)
+            elif "https://trackmania.exchange/maps/" in track:
+                track_id = track.partition("/maps/")[2]
+            else:
+                track_id = "-1"
 
-        if await if_integer(track) is True:
-            track_id = str(track)
-        elif "https://trackmania.exchange/maps/" in track:
-            track_id = track.partition("/maps/")[2]
-        else:
-            track_id = "-1"
+            track_exc_request_url = (
+                "https://trackmania.exchange/api/maps/get_map_info/multi/" + track_id
+            )
 
-        track_exc_request_url = (
-            "https://trackmania.exchange/api/maps/get_map_info/multi/" + track_id
-        )
+            map_info = await self.req(track_exc_request_url, get_or_url="get")
+            map_info = map_info[0]
 
-        map_info = await self.req(track_exc_request_url, get_or_url="get")
-        map_info = map_info[0]
-
-        embed = await self.track_embed(map_info, track_id)
-        await ctx.send(embed=embed)
+            embed = await self.track_embed(map_info, track_id)
+            await ctx.send(embed=embed)
+        except:
+            await ctx.send("No results found.")
 
     @trackmania.command(name="worldrecords")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
