@@ -132,7 +132,7 @@ class Trackmania(commands.Cog):
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def tracksearch(self, ctx, *, search: str):
         """Search for a track on Trackmania.exchange."""
-
+        await ctx.trigger_typing()
         full_search = await self.req("https://trackmania.exchange/tracksearch2/search?api=on&format=json&trackname=" + search, get_or_url="get")
         full_search = full_search[0]
         try:
@@ -159,6 +159,8 @@ class Trackmania(commands.Cog):
     async def trackinfo(self, ctx, track):
         """Grab a Trackmania.Exchange's track information."""
 
+        await ctx.trigger_typing()
+
         async def if_integer(string):
             try:
                 int(string)
@@ -181,7 +183,6 @@ class Trackmania(commands.Cog):
         map_info = map_info[0]
 
         embed = await self.track_embed(map_info, track_id)
-        await message.delete()
         await ctx.send(embed=embed)
 
     @trackmania.command(name="worldrecords")
@@ -222,6 +223,7 @@ class Trackmania(commands.Cog):
                 "You did something wrong or the bot did something wrong. It's very likely that it is your fault however."
             )
         else:
+            await ctx.trigger_typing()
             author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
             author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
 
@@ -309,9 +311,7 @@ class Trackmania(commands.Cog):
         elif number < 1:
             await ctx.send("https://www.youtube.com/watch?v=xxhNCY21-xs")
         else:
-            message = await ctx.send(
-                "While waiting please listen to this amazing elevator music: https://www.youtube.com/watch?v=s-UFPhz2nZ0"
-            )
+            await ctx.trigger_typing()
             embeds = []
 
             async def random_track():
@@ -336,5 +336,4 @@ class Trackmania(commands.Cog):
                 
         await asyncio.gather(*[random_track() for i in range(number)])
 
-        await message.delete()
         await menu(ctx, embeds, DEFAULT_CONTROLS)
