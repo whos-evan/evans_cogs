@@ -133,8 +133,6 @@ class Trackmania(commands.Cog):
     async def tracksearch(self, ctx, *, search: str):
         """Search for a track on Trackmania.exchange."""
 
-        message = await ctx.send("This may take a second.")
-
         full_search = await self.req("https://trackmania.exchange/tracksearch2/search?api=on&format=json&trackname=" + search, get_or_url="get")
         full_search = full_search[0]
         try:
@@ -152,17 +150,14 @@ class Trackmania(commands.Cog):
                 embed = await self.track_embed(map_info, track_ids[i])
                 embeds.append(embed)
 
-            await message.delete()
             await menu(ctx, embeds, DEFAULT_CONTROLS)
         except:
-            await message.edit(content="No results found.")
+            await ctx.send(content="No results found.")
 
     @trackmania.command(name="trackinfo")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def trackinfo(self, ctx, track):
         """Grab a Trackmania.Exchange's track information."""
-
-        message = await ctx.send("This may take a second.")
 
         async def if_integer(string):
             try:
@@ -194,8 +189,6 @@ class Trackmania(commands.Cog):
     async def worldrecords(self, ctx, track, num: int):
         """Grab a Trackmania.Exchange/Trackmania.Io WR information."""
 
-        message = await ctx.send("This may take a second.")
-
         async def if_integer(string):
             try:
                 int(string)
@@ -225,7 +218,7 @@ class Trackmania(commands.Cog):
         map_info = map_info[0]
 
         if map_info == "[]":
-            await message.edit(
+            await ctx.send(
                 "You did something wrong or the bot did something wrong. It's very likely that it is your fault however."
             )
         else:
@@ -305,7 +298,6 @@ class Trackmania(commands.Cog):
 
             embed.set_image(url=track_photo)
 
-            await message.delete()
             await ctx.send(embed=embed)
 
     @trackmania.command(name="randomtrack")
