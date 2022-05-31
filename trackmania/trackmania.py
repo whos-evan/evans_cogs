@@ -341,13 +341,14 @@ class Trackmania(commands.Cog):
 
                 result = await self.track_embed(map_info, track_id, True)
                 embed = result[0]
-                name =  str(len(embeds))
+                num =  str(len(embeds))
+                name = result[1]
                 author_name = result[2]
                 author_time = result[3]
 
                 description = name + " by: " + author_name + " - " + author_time
 
-                option = discord.SelectOption(label=name, description=description)
+                option = discord.SelectOption(label=num, description=description)
                 options.append(option)
 
                 embeds.append(embed)
