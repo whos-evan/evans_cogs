@@ -28,8 +28,8 @@ class Trackmania(commands.Cog):
         pre_processed = super().format_help_for_context(ctx)
         return f"{pre_processed}\nCog Version: {self.__version__}\nAuthor: {self.__author__}"
 
-    def cog_unload(self):
-        self.bot.loop.create_task(self.session.close())
+    async def cog_unload(self):
+        await self.client.close()
 
     async def req(self, url, get_or_url):
         headers = {
