@@ -3,6 +3,7 @@ import aiohttp
 import asyncio
 import re
 import datetime
+from attr import has
 
 import discord
 from discord.ext import commands
@@ -340,7 +341,7 @@ class Trackmania(commands.Cog):
 
                 result = await self.track_embed(map_info, track_id, True)
                 embed = result[0]
-                name = result[1]
+                name = str(number) + " - " + result[1]
                 author_name = result[2]
                 author_time = result[3]
 
@@ -357,7 +358,9 @@ class Trackmania(commands.Cog):
                 def __init__(self):
                     super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
                 async def callback(self, interaction: discord.Interaction):
-                    await interaction.response.send_message(content=None, embed=embeds[self.row], ephemeral=True)
+                    for i in range(1, len(self.values)):
+                        if self.values[0][:-2].__contains__(str(i)):
+                            await interaction.response.send_message(content=None, embed=embeds[i], ephemeral=True)
             
             class SelectView(discord.ui.View):
                 def __init__(self, *, timeout = 180):
