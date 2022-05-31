@@ -360,6 +360,7 @@ class Trackmania(commands.Cog):
                 async def callback(self, interaction: discord.Interaction):
                     # find the corresponding embed and send it
                     index = interaction.result[0]
+                    print(index)
                     await interaction.response.send_message(content=None, embed=embeds[index], ephemeral=True)
 
             class SelectView(discord.ui.View):
