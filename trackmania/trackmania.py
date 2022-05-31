@@ -358,8 +358,7 @@ class Trackmania(commands.Cog):
                 def __init__(self):
                     super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
                 async def callback(self, interaction: discord.Interaction):
-                    num = self.values
-                    num = num.split(' - ')[0]
+                    num = self.values[0].split(' - ')[0]
                     await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
                     
 
