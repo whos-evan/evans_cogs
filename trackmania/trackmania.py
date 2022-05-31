@@ -358,7 +358,9 @@ class Trackmania(commands.Cog):
                 def __init__(self):
                     super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
                 async def callback(self, interaction: discord.Interaction):
-                    await interaction.response.send_message(content=None, embed=embeds[int(self.values.split(' - ')[0])], ephemeral=True)
+                    num = self.values
+                    num = num.split(' - ')[0]
+                    await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
                     
 
             class SelectView(discord.ui.View):
