@@ -65,9 +65,9 @@ class Trackmania(commands.Cog):
             name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
             length = re.findall('(?<="LengthName":").*(?=","DifficultyName")', map_info)
             difficulty = re.findall('(?<="DifficultyName":").*(?=","Laps")', map_info)
-            rating = re.findall('(?<="RatingVoteAverage":).*(?=,"HasScreenshot")', map_info)
+            award_count = re.findall('(?<="AwardCount":).*(?=,"CommentCount")', map_info)
             track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
-            track_desc = str("Rating: " + rating[0])
+            track_desc = str("Map ID: ", track_id)
 
             track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
 
@@ -119,7 +119,7 @@ class Trackmania(commands.Cog):
             embed.add_field(name="WR Time", value=wr_time, inline=True)
             embed.add_field(name="Track Length", value=length[0], inline=True)
             embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
-            embed.add_field(name="Track's Rating", value=rating[0], inline=True)
+            embed.add_field(name="Awards", value=award_count[0], inline=True)
             embed.set_image(url=track_photo)
             if return_important is False:
                 return embed
