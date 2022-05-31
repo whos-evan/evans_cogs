@@ -353,7 +353,7 @@ class Trackmania(commands.Cog):
 
         await asyncio.gather(*[random_track() for i in range(number)])
 
-        class Dropdown(discord.ui.Select, options=options, embeds=embeds):
+        class Dropdown(discord.ui.Select):
             def __init__(self):
                 super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
             async def callback(self, interaction: discord.Interaction):
