@@ -341,7 +341,7 @@ class Trackmania(commands.Cog):
 
                 result = await self.track_embed(map_info, track_id, True)
                 embed = result[0]
-                name = str(number) + " - " + result[1]
+                name =  str(len(embeds)) + ' ' + result[1]
                 author_name = result[2]
                 author_time = result[3]
 
