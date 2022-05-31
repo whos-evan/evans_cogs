@@ -67,7 +67,7 @@ class Trackmania(commands.Cog):
             difficulty = re.findall('(?<="DifficultyName":").*(?=","Laps")', map_info)
             award_count = re.findall('(?<="AwardCount":).*(?=,"CommentCount")', map_info)
             track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
-            track_desc = str("Map ID: ", track_id)
+            track_desc = str("Map ID: " + track_id)
 
             track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
 
