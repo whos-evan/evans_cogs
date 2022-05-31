@@ -133,7 +133,7 @@ class Trackmania(commands.Cog):
     async def trackmania(self, ctx):
         """Group for Trackmania track info."""
 
-    @trackmania.command(name="tracksearch")
+    @trackmania.command(name="search")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def tracksearch(self, ctx, *, search: str):
         """Search for a track on Trackmania.exchange."""
@@ -184,7 +184,7 @@ class Trackmania(commands.Cog):
         except:
             await ctx.send(content="No results found.")
 
-    @trackmania.command(name="trackinfo")
+    @trackmania.command(name="info")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def trackinfo(self, ctx, track):
         """Grab a Trackmania.Exchange's track information."""
@@ -217,7 +217,7 @@ class Trackmania(commands.Cog):
         except:
             await ctx.send("No results found.")
 
-    @trackmania.command(name="worldrecords")
+    @trackmania.command(name="records")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     async def worldrecords(self, ctx, track, num: int):
         """Grab a Trackmania.Exchange/Trackmania.Io WR information."""
