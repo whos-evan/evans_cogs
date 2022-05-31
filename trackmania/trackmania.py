@@ -131,7 +131,8 @@ class Trackmania(commands.Cog):
             else:
                 return embed, name[0], author_name[0], author_time
         except Exception as e:
-            await ctx.send('Error: ```' + str(e) + '```')
+            print(e)
+            return None
 
 
     @commands.group()
