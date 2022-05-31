@@ -357,7 +357,7 @@ class Trackmania(commands.Cog):
                 def __init__(self):
                     super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
                 async def callback(self, interaction: discord.Interaction):
-                    await interaction.response.send_message(content=None, embed=embeds[self._selected_values[0]], ephemeral=True)
+                    await interaction.response.send_message(content=None, embed=embeds[1], ephemeral=True)
             
             class SelectView(discord.ui.View):
                 def __init__(self, *, timeout = 180):
