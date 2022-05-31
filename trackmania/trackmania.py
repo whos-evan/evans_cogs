@@ -341,14 +341,13 @@ class Trackmania(commands.Cog):
 
                 result = await self.track_embed(map_info, track_id, True)
                 embed = result[0]
-                num =  str(len(embeds))
-                name = result[1]
+                name = str(len(embeds)) + ' - ' + result[1]
                 author_name = result[2]
                 author_time = result[3]
 
                 description = name + " by: " + author_name + " - " + author_time
 
-                option = discord.SelectOption(label=num, description=description)
+                option = discord.SelectOption(label=name, description=description)
                 options.append(option)
 
                 embeds.append(embed)
@@ -359,7 +358,7 @@ class Trackmania(commands.Cog):
                 def __init__(self):
                     super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
                 async def callback(self, interaction: discord.Interaction):
-                    await interaction.response.send_message(content=None, embed=embeds[int(self.values[0])], ephemeral=True)
+                    await interaction.response.send_message(content=None, embed=embeds[int(self.values.split(' - ')[0])], ephemeral=True)
                     
 
             class SelectView(discord.ui.View):
