@@ -144,18 +144,43 @@ class Trackmania(commands.Cog):
             track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
 
             embeds = []
+            options = []
             for i in range(len(track_ids)):
                 track_exc_request_url = (
-                    "https://trackmania.exchange/api/maps/get_map_info/multi/" + track_ids[i]
+                    "https://trackmania.exchange/api/maps/get_map_info/multi/"
+                    + track_ids[i]
                 )
 
                 map_info = await self.req(track_exc_request_url, get_or_url="get")
                 map_info = map_info[0]
 
-                embed = await self.track_embed(map_info, track_ids[i])
+                result = await self.track_embed(map_info, track_ids[i], True)
+                embed = result[0]
+                name = str(len(embeds)) + ' - ' + result[1]
+                author_name = result[2]
+                author_time = result[3]
+
+                description = name + " by: " + author_name + " - " + author_time
+
+                option = discord.SelectOption(label=name, description=description)
+                options.append(option)
+
                 embeds.append(embed)
 
-            await menu(ctx, embeds, DEFAULT_CONTROLS)
+            class Dropdown(discord.ui.Select):
+                def __init__(self):
+                    super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+                async def callback(self, interaction: discord.Interaction):
+                    num = self.values[0].split(' - ')[0]
+                    await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
+                    
+
+            class SelectView(discord.ui.View):
+                def __init__(self, *, timeout = 180):
+                    super().__init__(timeout=timeout)
+                    self.add_item(Dropdown())
+
+            await ctx.send('Choose the track you wish to view: ', view=SelectView())
         except:
             await ctx.send(content="No results found.")
 
@@ -310,7 +335,7 @@ class Trackmania(commands.Cog):
             await ctx.send(embed=embed)
 
     @trackmania.command(name="randomtrack")
-    @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=15, type=commands.BucketType.user)
     async def randomtrack(self, ctx, number: int):
         """Grab random Trackmania.Exchange's tracks."""
         if number > 25:
