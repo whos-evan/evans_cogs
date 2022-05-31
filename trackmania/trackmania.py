@@ -5,6 +5,7 @@ import re
 import datetime
 
 import discord
+from discord.ext import commands
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
@@ -47,7 +48,7 @@ class Trackmania(commands.Cog):
                 status = req.status
         return data, status
 
-    async def track_embed(self, map_info: str, track_id):
+    async def track_embed(self, map_info: str, track_id, return_important: bool = False):
         try:
             url = "https://trackmania.exchange/maps/" + track_id
             
@@ -119,7 +120,10 @@ class Trackmania(commands.Cog):
             embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
             embed.add_field(name="Track's Rating", value=rating[0], inline=True)
             embed.set_image(url=track_photo)
-            return embed
+            if return_important is False:
+                return embed
+            else:
+                return embed, name[0], author_name[0], author_time
         except:
             return None
 
@@ -315,6 +319,7 @@ class Trackmania(commands.Cog):
         else:
             await ctx.trigger_typing()
             embeds = []
+            options = []
 
             async def random_track():
                 random_url = await self.req(
@@ -333,9 +338,30 @@ class Trackmania(commands.Cog):
                 map_info = await self.req(track_exc_request_url, get_or_url="get")
                 map_info = map_info[0]
 
-                embed = await self.track_embed(map_info, track_id)
+                result = await self.track_embed(map_info, track_id, True)
+                embed = result[0]
+                name = result[1]
+                author_name = result[2]
+                author_time = result[3]
+
+                description = name + " by: " + author_name + " - " + author_time
+
+                option = discord.SelectOption(label=name, description=description)
+                options.append(option)
+
                 embeds.append(embed)
-                
+
         await asyncio.gather(*[random_track() for i in range(number)])
 
-        await menu(ctx, embeds, DEFAULT_CONTROLS)
+        class Dropdown(discord.ui.Select, options=options, embeds=embeds):
+            def __init__(self):
+                super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+            async def callback(self, interaction: discord.Interaction):
+                await interaction.response.send_message(content=None, embed=embeds[self.index], ephemeral=True)
+        
+        class SelectView(discord.ui.View):
+            def __init__(self, *, timeout = 180):
+                super().__init__(timeout=timeout)
+                self.add_item(Dropdown())
+
+        await ctx.send('Choose the track you wish to view: ', view=SelectView())
