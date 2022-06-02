@@ -403,15 +403,22 @@ class Trackmania(commands.Cog):
         await ctx.trigger_typing()
 
         totd_info = await self.req('https://trackmania.io/api/totd/0', get_or_url='get')
+        totd_info = totd_info[0]
 
         name = re.findall('(?<=,"name":").*?(?=","mapType":)', totd_info)
         thumbnail = re.findall('(?<=,"thumbnailUrl":).*?(?=","authorplayer":)', totd_info)
         author_name = re.findall('(?<=,"authorplayer":{"name":").*?(?=","tag":"|","id":)', totd_info)
+
         author_time = re.findall('(?<="authorScore":).*?(?=,"goldScore":)', totd_info)
+        author_time = int(author_time[-1])
+        author_time = author_time / 1000
+        author_time = datetime.timedelta(seconds=author_time)
+        author_time = str(author_time)
+        author_time = author_time[:-3]
 
         embed = discord.Embed(title=name[-1], url="https://trackmania.io/totd", description="Trackmania's Track Of The Day")
         embed.add_field(name="Author's Username", value=author_name[-1], inline=True)
-        embed.add_field(name="Author's Time", value=author_time[-1], inline=True)
+        embed.add_field(name="Author's Time", value=author_time[], inline=True)
         embed.set_thumbnail(url=thumbnail[-1])
 
         await ctx.send(embed=embed)
