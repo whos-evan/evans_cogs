@@ -406,7 +406,7 @@ class Trackmania(commands.Cog):
         totd_info = totd_info[0]
 
         name = re.findall('(?<=,"name":").*?(?=","mapType":)', totd_info)
-        thumbnail = re.findall('(?<=,"thumbnailUrl":).*?(?=","authorplayer":)', totd_info)
+        thumbnail = re.findall('(?<=,"thumbnailUrl":").*?(?=","authorplayer":)', totd_info)
         author_name = re.findall('(?<=,"authorplayer":{"name":").*?(?=","tag":"|","id":)', totd_info)
 
         author_time = re.findall('(?<="authorScore":).*?(?=,"goldScore":)', totd_info)
