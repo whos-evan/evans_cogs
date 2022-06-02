@@ -336,12 +336,69 @@ class Trackmania(commands.Cog):
             await ctx.send(embed=embed)
 
     @trackmania.command(name="randomtrack")
-    @commands.cooldown(rate=1, per=20, type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=15, type=commands.BucketType.user)
     async def randomtrack(self, ctx, number: int):
+        """Grab random Trackmania.Exchange's tracks."""
+        if number > 25:
+            await ctx.send("Don't crash the bot please.")
+        elif number < 1:
+            await ctx.send("https://www.youtube.com/watch?v=xxhNCY21-xs")
+        else:
+            await ctx.trigger_typing()
+            embeds = []
+            options = []
+
+            async def random_track():
+                random_url = await self.req(
+                    "https://trackmania.exchange/mapsearch2/search?random=1",
+                    get_or_url="url",
+                )
+                random_url = str(random_url[0])
+
+                track_id = random_url.partition("/maps/")[2]
+
+                track_exc_request_url = (
+                    "https://trackmania.exchange/api/maps/get_map_info/multi/"
+                    + track_id
+                )
+
+                map_info = await self.req(track_exc_request_url, get_or_url="get")
+                map_info = map_info[0]
+
+                result = await self.track_embed(map_info, track_id, True)
+                embed = result[0]
+                name = str(len(embeds)) + ' - ' + result[1]
+                name2 = result[1]
+                author_name = result[2]
+                author_time = result[3]
+
+                description = name2 + " by: " + author_name + " - " + author_time
+
+                option = discord.SelectOption(label=name, description=description)
+                options.append(option)
+
+                embeds.append(embed)
+
+            await asyncio.gather(*[random_track() for i in range(number)])
+
+            class Dropdown(discord.ui.Select):
+                def __init__(self):
+                    super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+                async def callback(self, interaction: discord.Interaction):
+                    num = self.values[0].split(' - ')[0]
+                    await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
+                    
+
+            class SelectView(discord.ui.View):
+                def __init__(self, *, timeout = 180):
+                    super().__init__(timeout=timeout)
+                    self.add_item(Dropdown())
+
+            await ctx.send('Choose the track you wish to view: ', view=SelectView())
 
     @trackmania.command(name="totd")
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
-    async def totd(self, ctx, *, search: str):
+    async def totd(self, ctx):
         """Grab Trackmania's current TOTD."""
         await ctx.trigger_typing()
 
