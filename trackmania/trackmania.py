@@ -418,7 +418,7 @@ class Trackmania(commands.Cog):
 
         embed = discord.Embed(title=name[-1], url="https://trackmania.io/totd", description="Trackmania's Track Of The Day")
         embed.add_field(name="Author's Username", value=author_name[-1], inline=True)
-        embed.add_field(name="Author's Time", value=author_time[], inline=True)
+        embed.add_field(name="Author's Time", value=author_time, inline=True)
         embed.set_thumbnail(url=thumbnail[-1])
 
         await ctx.send(embed=embed)
