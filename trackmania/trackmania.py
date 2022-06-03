@@ -128,7 +128,8 @@ class Trackmania(commands.Cog):
                 return embed
             else:
                 return embed, name[0], author_name[0], author_time
-        except:
+        except Exception as e:
+            print(f"Error: {e}")
             return None
 
 
