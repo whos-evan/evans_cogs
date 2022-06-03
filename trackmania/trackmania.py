@@ -50,87 +50,87 @@ class Trackmania(commands.Cog):
         return data, status
 
     async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
-        try:
-            track_id = re.findall('(?<="TrackID":).*(?=,"UserID":)', map_info)
-            track_id = track_id[number]
+        # try:
+        track_id = re.findall('(?<="TrackID":).*(?=,"UserID":)', map_info)
+        track_id = track_id[number]
 
-            url = f"https://trackmania.exchange/maps/{track_id}"
+        url = f"https://trackmania.exchange/maps/{track_id}"
 
-            author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
-            author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
+        author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
+        author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
 
-            author_time = int(author_time[number])
-            author_time = author_time / 1000
-            author_time = datetime.timedelta(seconds=author_time)
-            author_time = str(author_time)
-            author_time = author_time[:-3]
+        author_time = int(author_time[number])
+        author_time = author_time / 1000
+        author_time = datetime.timedelta(seconds=author_time)
+        author_time = str(author_time)
+        author_time = author_time[:-3]
 
-            name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
-            length = re.findall('(?<="LengthName":").*(?=","DifficultyName")', map_info)
-            difficulty = re.findall('(?<="DifficultyName":").*(?=","Laps")', map_info)
-            award_count = re.findall('(?<="AwardCount":).*(?=,"CommentCount")', map_info)
-            track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
-            track_desc = str("Map ID: " + track_id)
+        name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
+        length = re.findall('(?<="LengthName":").*(?=","DifficultyName")', map_info)
+        difficulty = re.findall('(?<="DifficultyName":").*(?=","Laps")', map_info)
+        award_count = re.findall('(?<="AwardCount":).*(?=,"CommentCount")', map_info)
+        track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
+        track_desc = str("Map ID: " + track_id)
 
-            track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
+        track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
 
-            track_io_request_url = (
-                "https://trackmania.io/api/leaderboard/map/"
-                + track_uid[number]
-                + "?offset=0&length="
-                + "1"
-            )
-            wr_info = await self.req(track_io_request_url, get_or_url="get")
-            wr_info = wr_info[0]
+        track_io_request_url = (
+            "https://trackmania.io/api/leaderboard/map/"
+            + track_uid[number]
+            + "?offset=0&length="
+            + "1"
+        )
+        wr_info = await self.req(track_io_request_url, get_or_url="get")
+        wr_info = wr_info[0]
 
-            record_names = []
-            record_times = []
+        record_names = []
+        record_times = []
 
-            async def findrecord(record_num):
-                name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
-                try:
-                    name = name[record_num]
-                    record_names.append(name)
-                except:
-                    name = "No Record"
-                    record_names.append(name)
+        async def findrecord(record_num):
+            name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
+            try:
+                name = name[record_num]
+                record_names.append(name)
+            except:
+                name = "No Record"
+                record_names.append(name)
 
-                time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
-                try:
-                    time = int(time[record_num])
-                    time = time / 1000
-                    time = datetime.timedelta(seconds=time)
-                    time = str(time)
-                    time = time[:-3]
-                    record_times.append(time)
-                except:
-                    time = "No Record"
-                    record_times.append(time)
+            time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
+            try:
+                time = int(time[record_num])
+                time = time / 1000
+                time = datetime.timedelta(seconds=time)
+                time = str(time)
+                time = time[:-3]
+                record_times.append(time)
+            except:
+                time = "No Record"
+                record_times.append(time)
 
-            await findrecord(0)
-            wr_time = (
-                "``"
-                + record_names[0]
-                + "`` set a time of ``"
-                + str(record_times[0])
-                + "``"
-            )
+        await findrecord(0)
+        wr_time = (
+            "``"
+            + record_names[0]
+            + "`` set a time of ``"
+            + str(record_times[0])
+            + "``"
+        )
 
-            embed = discord.Embed(title=name[number], url=url, description=track_desc)
-            embed.add_field(name="Author's Username", value=author_name[number], inline=True)
-            embed.add_field(name="Author's Time", value=author_time, inline=True)
-            embed.add_field(name="WR Time", value=wr_time, inline=True)
-            embed.add_field(name="Track Length", value=length[number], inline=True)
-            embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
-            embed.add_field(name="Awards", value=award_count[number], inline=True)
-            embed.set_image(url=track_photo)
-            if return_important is False:
-                return embed
-            else:
-                return embed, name[0], author_name[0], author_time
-        except Exception as e:
-            print(f"Error: {e}")
-            return None
+        embed = discord.Embed(title=name[number], url=url, description=track_desc)
+        embed.add_field(name="Author's Username", value=author_name[number], inline=True)
+        embed.add_field(name="Author's Time", value=author_time, inline=True)
+        embed.add_field(name="WR Time", value=wr_time, inline=True)
+        embed.add_field(name="Track Length", value=length[number], inline=True)
+        embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
+        embed.add_field(name="Awards", value=award_count[number], inline=True)
+        embed.set_image(url=track_photo)
+        if return_important is False:
+            return embed
+        else:
+            return embed, name[0], author_name[0], author_time
+#        except Exception as e:
+#            print(f"Error: {e}")
+#            return None
 
 
     @commands.group()
