@@ -144,42 +144,42 @@ class Trackmania(commands.Cog):
         await ctx.trigger_typing()
         full_search = await self.req("https://trackmania.exchange/tracksearch2/search?api=on&format=json&trackname=" + search, get_or_url="get")
         full_search = full_search[0]
-        try:
-            track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
-            embeds = []
-            options = []
-            for i in range(len(track_ids)):
-                result = await self.track_embed(map_info=full_search, number=i, return_important=True)
+#        try:
+        track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
+        embeds = []
+        options = []
+        for i in range(len(track_ids)):
+            result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
-                embed = result[0]
-                name = str(len(embeds)) + ' - ' + result[1]
-                name2 = result[1]
-                author_name = result[2]
-                author_time = result[3]
+            embed = result[0]
+            name = str(len(embeds)) + ' - ' + result[1]
+            name2 = result[1]
+            author_name = result[2]
+            author_time = result[3]
 
-                description = name2 + " by: " + author_name + " - " + author_time
+            description = name2 + " by: " + author_name + " - " + author_time
 
-                option = discord.SelectOption(label=name, description=description)
-                options.append(option)
+            option = discord.SelectOption(label=name, description=description)
+            options.append(option)
 
-                embeds.append(embed)
+            embeds.append(embed)
 
-            class Dropdown(discord.ui.Select):
-                def __init__(self):
-                    super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
-                async def callback(self, interaction: discord.Interaction):
-                    num = self.values[0].split(' - ')[0]
-                    await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
-                    
+        class Dropdown(discord.ui.Select):
+            def __init__(self):
+                super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+            async def callback(self, interaction: discord.Interaction):
+                num = self.values[0].split(' - ')[0]
+                await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
+                
 
-            class SelectView(discord.ui.View):
-                def __init__(self, *, timeout = 180):
-                    super().__init__(timeout=timeout)
-                    self.add_item(Dropdown())
+        class SelectView(discord.ui.View):
+            def __init__(self, *, timeout = 180):
+                super().__init__(timeout=timeout)
+                self.add_item(Dropdown())
 
-            await ctx.send('Choose the track you wish to view: ', view=SelectView())
-        except:
-            await ctx.send(content="No results found.")
+        await ctx.send('Choose the track you wish to view: ', view=SelectView())
+#        except:
+#            await ctx.send(content="No results found.")
 
     @trackmania.command(name="info")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
