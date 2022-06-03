@@ -391,7 +391,7 @@ class Trackmania(commands.Cog):
 
                     embeds.append(embed)
                 
-                await asyncio.gather(*[gather_track_ids(i) for i in range(number)])
+                await asyncio.gather(*[gather_embeds(i) for i in range(number)])
 
                 class Dropdown(discord.ui.Select):
                     def __init__(self):
