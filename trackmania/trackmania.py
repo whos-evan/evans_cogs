@@ -343,7 +343,6 @@ class Trackmania(commands.Cog):
             await ctx.trigger_typing()
             embeds = []
             options = []
-
             track_ids = []
 
             for i in range(number):
@@ -357,6 +356,7 @@ class Trackmania(commands.Cog):
                 track_ids.append(track_id)
             
             track_ids = ",".join(track_ids)
+            print(track_ids)
 
             full_search = await self.req('https://trackmania.exchange/api/maps/get_map_info/multi/' + track_ids, get_or_url="get")
 
@@ -364,7 +364,7 @@ class Trackmania(commands.Cog):
                 result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
                 embed = result[0]
-                name = str(len(embeds)) + ' - ' + result[1]
+                name = str(len(embeds)) + ' - ' + result[1] 
                 name2 = result[1]
                 author_name = result[2]
                 author_time = result[3]
