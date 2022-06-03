@@ -49,7 +49,7 @@ class Trackmania(commands.Cog):
                 status = req.status
         return data, status
 
-    async def track_embed(self, map_info: str, number = 0, return_important: bool = False):
+    async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
         try:
             track_id = re.findall('(?<="TrackID":).*(?=,"UserID":)', map_info)
             track_id = track_id[number]
@@ -148,7 +148,7 @@ class Trackmania(commands.Cog):
             track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
             embeds = []
             options = []
-            for i in range(track_ids):
+            for i in range(len(track_ids)):
                 result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
                 embed = result[0]
@@ -343,39 +343,6 @@ class Trackmania(commands.Cog):
             await ctx.trigger_typing()
             embeds = []
             options = []
-
-            async def random_track():
-                random_url = await self.req(
-                    "https://trackmania.exchange/mapsearch2/search?random=1",
-                    get_or_url="url",
-                )
-                random_url = str(random_url[0])
-
-                track_id = random_url.partition("/maps/")[2]
-
-                track_exc_request_url = (
-                    "https://trackmania.exchange/api/maps/get_map_info/multi/"
-                    + track_id
-                )
-
-                map_info = await self.req(track_exc_request_url, get_or_url="get")
-                map_info = map_info[0]
-
-                result = await self.track_embed(map_info, track_id, True)
-                embed = result[0]
-                name = str(len(embeds)) + ' - ' + result[1]
-                name2 = result[1]
-                author_name = result[2]
-                author_time = result[3]
-
-                description = name2 + " by: " + author_name + " - " + author_time
-
-                option = discord.SelectOption(label=name, description=description)
-                options.append(option)
-
-                embeds.append(embed)
-
-            await asyncio.gather(*[random_track() for i in range(number)])
 
             track_ids = []
 
