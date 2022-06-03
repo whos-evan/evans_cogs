@@ -127,7 +127,7 @@ class Trackmania(commands.Cog):
         if return_important is False:
             return embed
         else:
-            return embed, name[0], author_name[0], author_time
+            return embed, name[number], author_name[number], author_time
 #        except Exception as e:
 #            print(f"Error: {e}")
 #            return None
