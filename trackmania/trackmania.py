@@ -356,9 +356,9 @@ class Trackmania(commands.Cog):
                 track_ids.append(track_id)
             
             track_ids = ",".join(track_ids)
-            print(track_ids)
 
             full_search = await self.req('https://trackmania.exchange/api/maps/get_map_info/multi/' + track_ids, get_or_url="get")
+            print(full_search)
 
             for i in range(number):
                 result = await self.track_embed(map_info=full_search, number=i, return_important=True)
