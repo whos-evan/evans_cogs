@@ -72,7 +72,7 @@ class Trackmania(commands.Cog):
         track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
         track_desc = str("Map ID: " + track_id)
 
-        track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
+        track_uid = re.findall('(?<="TrackUID":").*?(?=","Mood":)', map_info)
 
         track_io_request_url = (
             "https://trackmania.io/api/leaderboard/map/"
