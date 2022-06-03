@@ -353,7 +353,7 @@ class Trackmania(commands.Cog):
             options = []
             track_ids = []
 
-            for i in range(number):
+            async def gather_track_ids():
                 random_url = await self.req(
                     "https://trackmania.exchange/mapsearch2/search?random=1",
                     get_or_url="url",
@@ -366,6 +366,7 @@ class Trackmania(commands.Cog):
                     track_id = random_url.partition("/maps/")[2]
                     track_ids.append(track_id)
             
+            await asyncio.gather(*[gather_track_ids() for i in range(number)])
             track_ids = ",".join(track_ids)
 
             full_search = await self.req('https://trackmania.exchange/api/maps/get_map_info/multi/' + track_ids, get_or_url="get")
@@ -374,8 +375,8 @@ class Trackmania(commands.Cog):
             else:
                 full_search = full_search[0]
 
-                for i in range(number):
-                    result = await self.track_embed(map_info=full_search, number=i, return_important=True)
+                async def gather_embeds(number):
+                    result = await self.track_embed(map_info=full_search, number=number, return_important=True)
 
                     embed = result[0]
                     name = str(len(embeds)) + ' - ' + result[1] 
@@ -389,6 +390,8 @@ class Trackmania(commands.Cog):
                     options.append(option)
 
                     embeds.append(embed)
+                
+                await asyncio.gather(*[gather_track_ids(i) for i in range(number)])
 
                 class Dropdown(discord.ui.Select):
                     def __init__(self):
