@@ -411,7 +411,7 @@ class Trackmania(commands.Cog):
         author_time = str(author_time)
         author_time = author_time[:-3]
 
-        embed = discord.Embed(title=name[-1], url="https://trackmania.io/totd", description="Trackmania's Track Of The Day")
+        embed = discord.Embed(title=name[-1], url="https://trackmania.io/#/totd", description="Trackmania's Track Of The Day")
         embed.add_field(name="Author's Username", value=author_name[-1], inline=True)
         embed.add_field(name="Author's Time", value=author_time, inline=True)
         embed.set_image(url=thumbnail[-1])
