@@ -49,14 +49,17 @@ class Trackmania(commands.Cog):
                 status = req.status
         return data, status
 
-    async def track_embed(self, map_info: str, track_id, return_important: bool = False):
+    async def track_embed(self, map_info: str, number = 0, return_important: bool = False):
         try:
-            url = "https://trackmania.exchange/maps/" + track_id
-            
+            track_id = re.findall('(?<="TrackID":).*(?=,"UserID":)', map_info)
+            track_id = track_id[number]
+
+            url = f"https://trackmania.exchange/maps/{track_id}"
+
             author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
             author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
 
-            author_time = int(author_time[0])
+            author_time = int(author_time[number])
             author_time = author_time / 1000
             author_time = datetime.timedelta(seconds=author_time)
             author_time = str(author_time)
@@ -73,7 +76,7 @@ class Trackmania(commands.Cog):
 
             track_io_request_url = (
                 "https://trackmania.io/api/leaderboard/map/"
-                + track_uid[0]
+                + track_uid[number]
                 + "?offset=0&length="
                 + "1"
             )
@@ -113,13 +116,13 @@ class Trackmania(commands.Cog):
                 + "``"
             )
 
-            embed = discord.Embed(title=name[0], url=url, description=track_desc)
-            embed.add_field(name="Author's Username", value=author_name[0], inline=True)
+            embed = discord.Embed(title=name[number], url=url, description=track_desc)
+            embed.add_field(name="Author's Username", value=author_name[number], inline=True)
             embed.add_field(name="Author's Time", value=author_time, inline=True)
             embed.add_field(name="WR Time", value=wr_time, inline=True)
-            embed.add_field(name="Track Length", value=length[0], inline=True)
+            embed.add_field(name="Track Length", value=length[number], inline=True)
             embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
-            embed.add_field(name="Awards", value=award_count[0], inline=True)
+            embed.add_field(name="Awards", value=award_count[number], inline=True)
             embed.set_image(url=track_photo)
             if return_important is False:
                 return embed
@@ -142,19 +145,11 @@ class Trackmania(commands.Cog):
         full_search = full_search[0]
         try:
             track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
-
             embeds = []
             options = []
-            for i in range(len(track_ids)):
-                track_exc_request_url = (
-                    "https://trackmania.exchange/api/maps/get_map_info/multi/"
-                    + track_ids[i]
-                )
+            for i in range(track_ids):
+                result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
-                map_info = await self.req(track_exc_request_url, get_or_url="get")
-                map_info = map_info[0]
-
-                result = await self.track_embed(map_info, track_ids[i], True)
                 embed = result[0]
                 name = str(len(embeds)) + ' - ' + result[1]
                 name2 = result[1]
@@ -213,7 +208,7 @@ class Trackmania(commands.Cog):
             map_info = await self.req(track_exc_request_url, get_or_url="get")
             map_info = map_info[0]
 
-            embed = await self.track_embed(map_info, track_id)
+            embed = await self.track_embed(map_info)
             await ctx.send(embed=embed)
         except:
             await ctx.send("No results found.")
@@ -381,6 +376,38 @@ class Trackmania(commands.Cog):
 
             await asyncio.gather(*[random_track() for i in range(number)])
 
+            track_ids = []
+
+            for i in range(number):
+                random_url = await self.req(
+                    "https://trackmania.exchange/mapsearch2/search?random=1",
+                    get_or_url="url",
+                )
+                random_url = str(random_url[0])
+
+                track_id = random_url.partition("/maps/")[2]
+                track_ids.append(track_id)
+            
+            track_ids = ",".join(track_ids)
+
+            full_search = await self.req('https://trackmania.exchange/api/maps/get_map_info/multi/' + track_ids, get_or_url="get")
+
+            for i in range(number):
+                result = await self.track_embed(map_info=full_search, number=i, return_important=True)
+
+                embed = result[0]
+                name = str(len(embeds)) + ' - ' + result[1]
+                name2 = result[1]
+                author_name = result[2]
+                author_time = result[3]
+
+                description = name2 + " by: " + author_name + " - " + author_time
+
+                option = discord.SelectOption(label=name, description=description)
+                options.append(option)
+
+                embeds.append(embed)
+
             class Dropdown(discord.ui.Select):
                 def __init__(self):
                     super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
@@ -422,5 +449,4 @@ class Trackmania(commands.Cog):
         embed.set_image(url=thumbnail[-1])
 
         await ctx.send(embed=embed)
-
 
