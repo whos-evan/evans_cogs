@@ -3,7 +3,7 @@ import aiohttp
 import asyncio
 import re
 import datetime
-from attr import has
+import json
 
 import discord
 from discord.ext import commands
@@ -51,8 +51,9 @@ class Trackmania(commands.Cog):
 
     async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
         try:
-            track_id = re.findall('(?<="TrackID":).*?(?=,"UserID":)', map_info)
-            track_id = track_id[number]
+            data = json.load(map_info)
+            print(data)
+            track_id = data['track_id'][number]
 
             url = f"https://trackmania.exchange/maps/{track_id}"
 
