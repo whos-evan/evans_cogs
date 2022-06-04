@@ -33,7 +33,7 @@ class GameDB(commands.Cog):
     async def cog_unload(self):
         await self.client.close()
 
-    async def req(self, url, creds: list, data_obj: object):
+    async def req(self, url, creds: dict, data_obj: object):
         headers = {
             "User-Agent": "Discord-Bot for Pulling Information About Video Games",
             "From": "contact@is-a.win",
