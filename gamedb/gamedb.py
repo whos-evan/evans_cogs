@@ -37,8 +37,8 @@ class GameDB(commands.Cog):
         headers = {
             "User-Agent": "Discord-Bot for Pulling Information About Video Games",
             "From": "contact@is-a.win",
-            "Client-ID": creds[0],
-            "Authorization": creds[1]
+            "Client-ID": creds['client_id'],
+            "Authorization": creds['client_secret']
         }
         reqtype = self.session.post
         async with reqtype(url, headers=headers, data=data_obj) as req:
