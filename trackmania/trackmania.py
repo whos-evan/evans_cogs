@@ -45,7 +45,7 @@ class Trackmania(commands.Cog):
                 status = req.status
         else:
             async with reqtype(url, headers=headers) as req:
-                data = await req.text()
+                data = await req.json()
                 status = req.status
         return data, status
 
