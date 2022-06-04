@@ -1,4 +1,4 @@
-from .trackmania import Trackmania
+from .gamedb import GameDB
 
 async def setup(bot):
-    await bot.add_cog(Trackmania(bot))
+    await bot.add_cog(GameDB(bot))
