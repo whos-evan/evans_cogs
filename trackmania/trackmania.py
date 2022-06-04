@@ -49,7 +49,7 @@ class Trackmania(commands.Cog):
                 status = req.status
         return data, status
 
-    async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
+    async def track_embed(self, map_info, number: int = 0, return_important: bool = False):
 #        try:
         data = json.load(map_info)
         print(data)
