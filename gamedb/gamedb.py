@@ -65,7 +65,7 @@ class GameDB(commands.Cog):
             creds = await self.bot.get_shared_api_tokens("twitch")
             print(creds)
             await ctx.send(creds)
-            data = f'search "{search_term}"; fields name,release_date.human; limit 10;'
+            data = f'search "{search_term}"; fields name; limit 10;'
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
             await ctx.send(response)
