@@ -63,7 +63,7 @@ class GameDB(commands.Cog):
             await ctx.send('You need to set your api keys with ``[p]gamedb api``.')
         else:
             creds = await self.bot.get_shared_api_tokens("twitch")
-            data = f'search "{search_term}"; fields name; limit 10;'
+            data = f'search "{search_term}"; fields name; sort rating desc; limit 10;'
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
             await ctx.send(response)
