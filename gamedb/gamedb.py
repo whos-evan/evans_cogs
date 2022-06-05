@@ -10,6 +10,7 @@ from discord.ext import commands
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
+from redbot.core.utils.chat_formatting import pagify
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 
@@ -66,4 +67,5 @@ class GameDB(commands.Cog):
             data = f'search "{search_term}"; fields name; limit 50;'
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
-            await ctx.send(response)
+            for page in pagify(response):
+                await ctx.send(page)
