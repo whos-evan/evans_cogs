@@ -37,6 +37,7 @@ class GameDB(commands.Cog):
         headers = {
             "User-Agent": "Discord-Bot for Pulling Information About Video Games",
             "From": "contact@is-a.win",
+            'Accept': 'application/json',
             "Client-ID": creds['client_id'],
             "Authorization": f"Bearer {creds['access_token']}"
         }
