@@ -66,3 +66,4 @@ class GameDB(commands.Cog):
             data_obj= {"name": search_term}
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data_obj=data_obj)
             print(response)
+            await ctx.send(response)
