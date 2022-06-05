@@ -54,7 +54,7 @@ class GameDB(commands.Cog):
     @gamedb.command(name="api")
     async def gamedb_api(self, ctx):
         """Instructions for how to securely add set the api keys."""
-        await ctx.send("Signup for Twitch's API then run the command ``set api twitch client_id,1234ksdjf client_secret,1234aldlfkd`` to set the keys. Make sure that you input your data.")
+        await ctx.send("Signup for Twitch's API then run the command ``set api twitch client_id,1234ksdjf access_token,1234aldlfkd`` to set the keys. Make sure that you input your data.")
 
     @gamedb.command(name="search")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
@@ -63,8 +63,6 @@ class GameDB(commands.Cog):
             await ctx.send('You need to set your api keys with ``[p]gamedb api``.')
         else:
             creds = await self.bot.get_shared_api_tokens("twitch")
-            print(creds)
-            await ctx.send(creds)
             data = f'search "{search_term}"; fields name; limit 10;'
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
