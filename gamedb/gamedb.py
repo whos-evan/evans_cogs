@@ -33,7 +33,7 @@ class GameDB(commands.Cog):
     async def cog_unload(self):
         await self.client.close()
 
-    async def req(self, url, creds, data_obj: object):
+    async def req(self, url, creds, data):
         headers = {
             "User-Agent": "Discord-Bot for Pulling Information About Video Games",
             "From": "contact@is-a.win",
@@ -41,7 +41,7 @@ class GameDB(commands.Cog):
             "Authorization": f"Bearer {creds['access_token']}"
         }
         reqtype = self.session.post
-        async with reqtype(url, headers=headers, data=data_obj) as req:
+        async with reqtype(url, headers=headers, data=data) as req:
             data = await req.text()
             status = req.status
         return data, status
@@ -54,18 +54,6 @@ class GameDB(commands.Cog):
     async def gamedb_api(self, ctx):
         """Instructions for how to securely add set the api keys."""
         await ctx.send("Signup for Twitch's API then run the command ``set api twitch client_id,1234ksdjf client_secret,1234aldlfkd`` to set the keys. Make sure that you input your data.")
-    
-    @gamedb.command(name="apirefresh")
-    async def gamedb_apirefresh(self, ctx):
-        """Refresh the api keys."""
-        if await self.bot.get_shared_api_tokens("twitch") is None:
-            await ctx.send('You need to set your api keys with ``[p]gamedb api``.')
-        else:
-            creds = await self.bot.get_shared_api_tokens("twitch")
-            await ctx.send("Refreshing the api keys.")
-            req = await self.req(url=f"https://id.twitch.tv/oauth2/token?client_id={creds['client_id']}&client_secret={creds['client_secret']}&grant_type=client_credentials")
-            access_token = req['access_token']
-            await ctx.bot.set_shared_api_tokens("token", access_token=access_token)
 
     @gamedb.command(name="search")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
@@ -76,7 +64,7 @@ class GameDB(commands.Cog):
             creds = await self.bot.get_shared_api_tokens("twitch")
             print(creds)
             await ctx.send(creds)
-            data_obj= {"name": search_term}
-            response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data_obj=data_obj)
+            data = f'fields *; where name {search_term}; sort popularity; limit 10;'
+            response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
             await ctx.send(response)
