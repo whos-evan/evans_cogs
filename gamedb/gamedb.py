@@ -7,6 +7,7 @@ import datetime
 
 import discord
 from discord.ext import commands
+from jmespath import search
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
@@ -65,7 +66,7 @@ class GameDB(commands.Cog):
             creds = await self.bot.get_shared_api_tokens("twitch")
             print(creds)
             await ctx.send(creds)
-            data = f'fields *; where name {search_term}; sort popularity; limit 10;'
+            data = f'search "{search_term}"; fields name,release_date.human; limit 10;'
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
             await ctx.send(response)
