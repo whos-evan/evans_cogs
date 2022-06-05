@@ -7,7 +7,6 @@ import datetime
 
 import discord
 from discord.ext import commands
-from jmespath import search
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
