@@ -67,5 +67,5 @@ class GameDB(commands.Cog):
             data = f'search "{search_term}"; fields name; limit 50;'
             response = await self.req(url='https://api.igdb.com/v4/search', creds=creds, data=data)
             print(response)
-            for page in pagify(response):
+            for page in pagify(response[0]):
                 await ctx.send(page)
