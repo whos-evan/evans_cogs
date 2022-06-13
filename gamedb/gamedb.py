@@ -72,6 +72,7 @@ class GameDB(commands.Cog):
 
             for i in results:
                 result = results[1]
+                result = result.replace("'", '"')
                 print(result)
                 result = json.loads(str(result))
 
