@@ -50,86 +50,86 @@ class Trackmania(commands.Cog):
         return data, status
 
     async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
-#        try:
-        track_id = map_info[number]['TrackID']
-        track_id = str(track_id)
+        try:
+            track_id = map_info[number]['TrackID']
+            track_id = str(track_id)
 
-        url = f"https://trackmania.exchange/maps/{track_id}"
+            url = f"https://trackmania.exchange/maps/{track_id}"
 
-        author_name = map_info[number]['Username']
-        author_time = map_info[number]['AuthorTime']
+            author_name = map_info[number]['Username']
+            author_time = map_info[number]['AuthorTime']
 
-        author_time = author_time / 1000
-        author_time = datetime.timedelta(seconds=author_time)
-        author_time = str(author_time)
-        author_time = author_time[:-3]
+            author_time = author_time / 1000
+            author_time = datetime.timedelta(seconds=author_time)
+            author_time = str(author_time)
+            author_time = author_time[:-3]
 
-        name = map_info[number]['Name']
-        length = map_info[number]['LengthName']
-        difficulty = map_info[number]['DifficultyName']
-        award_count = map_info[number]['AwardCount']
-        award_count = str(award_count)
-        track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
-        track_desc = str("Map ID: " + track_id)
+            name = map_info[number]['Name']
+            length = map_info[number]['LengthName']
+            difficulty = map_info[number]['DifficultyName']
+            award_count = map_info[number]['AwardCount']
+            award_count = str(award_count)
+            track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
+            track_desc = str("Map ID: " + track_id)
 
-        track_uid = map_info[number]['TrackUID']
+            track_uid = map_info[number]['TrackUID']
 
-        track_io_request_url = (
-            "https://trackmania.io/api/leaderboard/map/"
-            + track_uid
-            + "?offset=0&length="
-            + "1"
-        )
-        wr_info = await self.req(track_io_request_url, get_or_url="get")
-        wr_info = wr_info[0]
+            track_io_request_url = (
+                "https://trackmania.io/api/leaderboard/map/"
+                + track_uid
+                + "?offset=0&length="
+                + "1"
+            )
+            wr_info = await self.req(track_io_request_url, get_or_url="get")
+            wr_info = wr_info[0]
 
-        record_names = []
-        record_times = []
+            record_names = []
+            record_times = []
 
-        async def findrecord(record_num):
-            name = wr_info['tops'][record_num]['player']
-            try:
-                name = name[record_num]
-                record_names.append(name)
-            except:
-                name = "No Record"
-                record_names.append(name)
+            async def findrecord(record_num):
+                name = wr_info['tops'][record_num]['player']
+                try:
+                    name = name[record_num]
+                    record_names.append(name)
+                except:
+                    name = "No Record"
+                    record_names.append(name)
 
-            time = wr_info['tops'][record_num]['time']
-            try:
-                time = int(time[record_num])
-                time = time / 1000
-                time = datetime.timedelta(seconds=time)
-                time = str(time)
-                time = time[:-3]
-                record_times.append(time)
-            except:
-                time = "No Record"
-                record_times.append(time)
+                time = wr_info['tops'][record_num]['time']
+                try:
+                    time = int(time[record_num])
+                    time = time / 1000
+                    time = datetime.timedelta(seconds=time)
+                    time = str(time)
+                    time = time[:-3]
+                    record_times.append(time)
+                except:
+                    time = "No Record"
+                    record_times.append(time)
 
-        await findrecord(0)
-        wr_time = (
-            "``"
-            + record_names[0]
-            + "`` set a time of ``"
-            + str(record_times[0])
-            + "``"
-        )
+            await findrecord(0)
+            wr_time = (
+                "``"
+                + record_names[0]
+                + "`` set a time of ``"
+                + str(record_times[0])
+                + "``"
+            )
 
-        embed = discord.Embed(title=name, url=url, description=track_desc)
-        embed.add_field(name="Author's Username", value=author_name, inline=True)
-        embed.add_field(name="Author's Time", value=author_time, inline=True)
-        embed.add_field(name="WR Time", value=wr_time, inline=True)
-        embed.add_field(name="Track Length", value=length, inline=True)
-        embed.add_field(name="Track's Difficulty", value=difficulty, inline=True)
-        embed.add_field(name="Awards", value=award_count, inline=True)
-        embed.set_image(url=track_photo)
-        if return_important is False:
-            return embed
-        else:
-            return embed, name, author_name, author_time
-#        except:
-#            return None
+            embed = discord.Embed(title=name, url=url, description=track_desc)
+            embed.add_field(name="Author's Username", value=author_name, inline=True)
+            embed.add_field(name="Author's Time", value=author_time, inline=True)
+            embed.add_field(name="WR Time", value=wr_time, inline=True)
+            embed.add_field(name="Track Length", value=length, inline=True)
+            embed.add_field(name="Track's Difficulty", value=difficulty, inline=True)
+            embed.add_field(name="Awards", value=award_count, inline=True)
+            embed.set_image(url=track_photo)
+            if return_important is False:
+                return embed
+            else:
+                return embed, name, author_name, author_time
+        except:
+            return None
 
 
     @commands.group()
@@ -146,41 +146,41 @@ class Trackmania(commands.Cog):
             await ctx.send("Something went wrong. Try again later.")
         else:
             full_search = full_search[0]
-            try:
-                embeds = []
-                options = []
-                for i in full_search:
-                    result = await self.track_embed(map_info=full_search, number=i, return_important=True)
+#            try:
+            embeds = []
+            options = []
+            for i in full_search:
+                result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
-                    embed = result[0]
-                    name = str(len(embeds)) + ' - ' + result[1]
-                    name2 = result[1]
-                    author_name = result[2]
-                    author_time = result[3]
+                embed = result[0]
+                name = str(len(embeds)) + ' - ' + result[1]
+                name2 = result[1]
+                author_name = result[2]
+                author_time = result[3]
 
-                    description = name2 + " by: " + author_name + " - " + author_time
+                description = name2 + " by: " + author_name + " - " + author_time
 
-                    option = discord.SelectOption(label=name, description=description)
-                    options.append(option)
+                option = discord.SelectOption(label=name, description=description)
+                options.append(option)
 
-                    embeds.append(embed)
+                embeds.append(embed)
 
-                class Dropdown(discord.ui.Select):
-                    def __init__(self):
-                        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
-                    async def callback(self, interaction: discord.Interaction):
-                        num = self.values[0].split(' - ')[0]
-                        await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
-                        
+            class Dropdown(discord.ui.Select):
+                def __init__(self):
+                    super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+                async def callback(self, interaction: discord.Interaction):
+                    num = self.values[0].split(' - ')[0]
+                    await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
+                    
 
-                class SelectView(discord.ui.View):
-                    def __init__(self, *, timeout = 180):
-                        super().__init__(timeout=timeout)
-                        self.add_item(Dropdown())
+            class SelectView(discord.ui.View):
+                def __init__(self, *, timeout = 180):
+                    super().__init__(timeout=timeout)
+                    self.add_item(Dropdown())
 
-                await ctx.send('Choose the track you wish to view: ', view=SelectView())
-            except:
-                await ctx.send(content="No results found.")
+            await ctx.send('Choose the track you wish to view: ', view=SelectView())
+#            except:
+#                await ctx.send(content="No results found.")
 
     @trackmania.command(name="info")
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
