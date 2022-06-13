@@ -87,17 +87,14 @@ class Trackmania(commands.Cog):
         record_times = []
 
         async def findrecord(record_num):
-            name = wr_info['tops'][record_num]['player']
             try:
-                name = name[record_num]
+                name = wr_info['tops'][record_num]['player']
                 record_names.append(name)
             except:
                 name = "No Record"
                 record_names.append(name)
-
-            time = wr_info['tops'][record_num]['time']
             try:
-                time = int(time[record_num])
+                time = wr_info['tops'][record_num]['time']
                 time = time / 1000
                 time = datetime.timedelta(seconds=time)
                 time = str(time)
