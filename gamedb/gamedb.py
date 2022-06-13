@@ -1,9 +1,7 @@
 # other shit
 from typing import List
 import aiohttp
-import asyncio
-import re
-import datetime
+import json
 
 import discord
 from discord.ext import commands
@@ -16,7 +14,7 @@ from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 class GameDB(commands.Cog):
     """
-    Trackmania cog.
+    GameDB cog.
     """
 
     __version__ = "0.0.1 beta"
@@ -66,6 +64,41 @@ class GameDB(commands.Cog):
             creds = await self.bot.get_shared_api_tokens("twitch")
             data = f'search "{search_term}"; fields name,platforms,summary,rating,screenshots,url; limit 50;'
             response = await self.req(url='https://api.igdb.com/v4/games', creds=creds, data=data)
-            for page in pagify(response[0]):
-                await ctx.send(page)
+            raw = response[0]
+            results = json.loads(raw)
+
+            embeds = []
+            options = []
+
+            for i in results:
+                result = results[i]
+                result = json.loads(result)
+
+                title = str(i) + ". " + result['name']
+                name = result['name']
+                url = result['url']
+                summary = result['summary']
+                short_summary = summary[:20] + "..."
+
+                option = discord.SelectOption(label=title, description=short_summary)
+                options.append(option)
+
+                embed=discord.Embed(title=title, url=url, description=summary)
+                embeds.append(embed)
+
+                class Dropdown(discord.ui.Select):
+                    def __init__(self):
+                        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
+                    async def callback(self, interaction: discord.Interaction):
+                        num = self.values[0].split(' - ')[0]
+                        await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
+                        
+
+                class SelectView(discord.ui.View):
+                    def __init__(self, *, timeout = 180):
+                        super().__init__(timeout=timeout)
+                        self.add_item(Dropdown())
+
+                await ctx.send('Choose the game you wish to view: ', view=SelectView())
+            
             
