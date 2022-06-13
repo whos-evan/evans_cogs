@@ -149,7 +149,7 @@ class Trackmania(commands.Cog):
 #            try:
             embeds = []
             options = []
-            for i in full_search:
+            for i in range(len(full_search)):
                 result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
                 embed = result[0]
