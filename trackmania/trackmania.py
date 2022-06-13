@@ -146,6 +146,7 @@ class Trackmania(commands.Cog):
             await ctx.send("Something went wrong. Try again later.")
         else:
             full_search = full_search[0]
+            full_search = full_search['results']
 #            try:
             embeds = []
             options = []
