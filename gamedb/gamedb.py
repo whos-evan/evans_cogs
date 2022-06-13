@@ -65,7 +65,6 @@ class GameDB(commands.Cog):
             data = f'search "{search_term}"; fields name,platforms,summary,rating,screenshots,url; limit 50;'
             response = await self.req(url='https://api.igdb.com/v4/games', creds=creds, data=data)
             raw = response[0]
-            print(raw)
             results = json.loads(raw)
 
             embeds = []
@@ -73,7 +72,7 @@ class GameDB(commands.Cog):
 
             for i in results:
                 result = results[i]
-                result = json.loads(result)
+                result = json.loads(str(result))
 
                 title = str(i) + ". " + result['name']
                 name = result['name']
