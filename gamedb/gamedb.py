@@ -70,7 +70,7 @@ class GameDB(commands.Cog):
             embeds = []
             options = []
 
-            for i in range(results):
+            for i in results:
                 result = results[1]
                 result = json.loads(str(result))
 
