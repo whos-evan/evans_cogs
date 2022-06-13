@@ -1,7 +1,8 @@
 # other shit
 import aiohttp
 import asyncio
-import re
+import json
+# import re
 import datetime
 
 import discord
@@ -44,38 +45,37 @@ class Trackmania(commands.Cog):
                 status = req.status
         else:
             async with reqtype(url, headers=headers) as req:
-                data = await req.text()
+                data = await req.json()
                 status = req.status
         return data, status
 
     async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
         try:
-            track_id = re.findall('(?<="TrackID":).*?(?=,"UserID":)', map_info)
-            track_id = track_id[number]
+            track_id = map_info[number]['TrackID']
 
             url = f"https://trackmania.exchange/maps/{track_id}"
 
-            author_name = re.findall('(?<="Username":").*?(?=","GbxMapName")', map_info)
-            author_time = re.findall('(?<="AuthorTime":).*?(?=,"ParserVersion")', map_info)
+            author_name = map_info[number]['Username']
+            author_time = map_info[number]['AuthorTime']
 
-            author_time = int(author_time[number])
+            author_time = int(author_time)
             author_time = author_time / 1000
             author_time = datetime.timedelta(seconds=author_time)
             author_time = str(author_time)
             author_time = author_time[:-3]
 
-            name = re.findall('(?<="Name":").*?(?=","Tags")', map_info)
-            length = re.findall('(?<="LengthName":").*?(?=","DifficultyName")', map_info)
-            difficulty = re.findall('(?<="DifficultyName":").*?(?=","Laps")', map_info)
-            award_count = re.findall('(?<="AwardCount":).*?(?=,"CommentCount")', map_info)
+            name = map_info[number]['Name']
+            length = map_info[number]['LengthName']
+            difficulty = map_info[number]['DifficultyName']
+            award_count = map_info[number]['AwardCount']
             track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
             track_desc = str("Map ID: " + track_id)
 
-            track_uid = re.findall('(?<="TrackUID":").*?(?=","Mood":)', map_info)
+            track_uid = map_info[number]['TrackUID']
 
             track_io_request_url = (
                 "https://trackmania.io/api/leaderboard/map/"
-                + track_uid[number]
+                + track_uid
                 + "?offset=0&length="
                 + "1"
             )
@@ -86,7 +86,7 @@ class Trackmania(commands.Cog):
             record_times = []
 
             async def findrecord(record_num):
-                name = re.findall('(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info)
+                name = wr_info['tops'][record_num]['player']
                 try:
                     name = name[record_num]
                     record_names.append(name)
@@ -94,7 +94,7 @@ class Trackmania(commands.Cog):
                     name = "No Record"
                     record_names.append(name)
 
-                time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
+                time = wr_info['tops'][record_num]['player']['time']
                 try:
                     time = int(time[record_num])
                     time = time / 1000
@@ -115,18 +115,18 @@ class Trackmania(commands.Cog):
                 + "``"
             )
 
-            embed = discord.Embed(title=name[number], url=url, description=track_desc)
-            embed.add_field(name="Author's Username", value=author_name[number], inline=True)
+            embed = discord.Embed(title=name, url=url, description=track_desc)
+            embed.add_field(name="Author's Username", value=author_name, inline=True)
             embed.add_field(name="Author's Time", value=author_time, inline=True)
             embed.add_field(name="WR Time", value=wr_time, inline=True)
-            embed.add_field(name="Track Length", value=length[number], inline=True)
-            embed.add_field(name="Track's Difficulty", value=difficulty[0], inline=True)
-            embed.add_field(name="Awards", value=award_count[number], inline=True)
+            embed.add_field(name="Track Length", value=length, inline=True)
+            embed.add_field(name="Track's Difficulty", value=difficulty, inline=True)
+            embed.add_field(name="Awards", value=award_count, inline=True)
             embed.set_image(url=track_photo)
             if return_important is False:
                 return embed
             else:
-                return embed, name[number], author_name[number], author_time
+                return embed, name, author_name, author_time
         except:
             return None
 
@@ -146,10 +146,9 @@ class Trackmania(commands.Cog):
         else:
             full_search = full_search[0]
             try:
-                track_ids = re.findall('(?<={"TrackID":).*?(?=,"UserID")', full_search)
                 embeds = []
                 options = []
-                for i in range(len(track_ids)):
+                for i in full_search:
                     result = await self.track_embed(map_info=full_search, number=i, return_important=True)
 
                     embed = result[0]
@@ -260,8 +259,8 @@ class Trackmania(commands.Cog):
                 )
             else:
                 await ctx.trigger_typing()
-                author_name = re.findall('(?<="Username":").*(?=","GbxMapName")', map_info)
-                author_time = re.findall('(?<="AuthorTime":).*(?=,"ParserVersion")', map_info)
+                author_name = map_info[0]['Username']
+                author_time = map_info[0]['AuthorTime']
 
                 track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
 
@@ -269,13 +268,13 @@ class Trackmania(commands.Cog):
                 author_time = author_time / 1000
                 author_time = str(author_time)
 
-                name = re.findall('(?<="Name":").*(?=","Tags")', map_info)
+                name = map_info[0]['Name']
 
-                track_uid = re.findall('(?<="TrackUID":").*(?=","Mood":)', map_info)
+                track_uid = map_info[0]['TrackUID']
 
                 track_io_request_url = (
                     "https://trackmania.io/api/leaderboard/map/"
-                    + track_uid[0]
+                    + track_uid
                     + "?offset=0&length="
                     + str(num)
                 )
@@ -286,27 +285,23 @@ class Trackmania(commands.Cog):
                 record_times = []
 
                 async def findrecord(record_num):
-                    name = re.findall(
-                        '(?<={"player":{"name":").*?(?=","tag"|","id":")', wr_info
-                    )
                     try:
-                        name = name[record_num]
+                        name = wr_info['tops'][record_num]['player']
                         record_names.append(name)
                     except:
                         name = "No Record"
                         record_names.append(name)
 
-                    time = re.findall('(?<="time":).*?(?=,"filename")', wr_info)
                     try:
-                        time = int(time[record_num])
+                        time = wr_info['tops'][record_num]['player']['time']
                         time = time / 1000
                         record_times.append(time)
                     except:
                         time = "No Record"
                         record_times.append(time)
 
-                embed = discord.Embed(title=name[0], url=url)
-                embed.add_field(name="Author's Username", value=author_name[0], inline=True)
+                embed = discord.Embed(title=name, url=url)
+                embed.add_field(name="Author's Username", value=author_name, inline=True)
                 embed.add_field(name="Author's Time", value=author_time, inline=True)
 
                 for x in range(0, num):
@@ -419,21 +414,21 @@ class Trackmania(commands.Cog):
         else:
             totd_info = totd_info[0]
 
-            name = re.findall('(?<=,"name":").*?(?=","mapType":)', totd_info)
-            thumbnail = re.findall('(?<=,"thumbnailUrl":").*?(?=","authorplayer":)', totd_info)
-            author_name = re.findall('(?<=,"authorplayer":{"name":").*?(?=","tag":"|","id":)', totd_info)
+            name = totd_info['days'][-1]['map']['name']
+            thumbnail = totd_info['days'][-1]['map']['thumbnailUrl']
+            author_name = totd_info['days'][-1]['map']['authorplayer']['name']
 
-            author_time = re.findall('(?<="authorScore":).*?(?=,"goldScore":)', totd_info)
-            author_time = int(author_time[-1])
+            author_time = totd_info['days'][-1]['map']['authorScore']
+            author_time = int(author_time)
             author_time = author_time / 1000
             author_time = datetime.timedelta(seconds=author_time)
             author_time = str(author_time)
             author_time = author_time[:-3]
 
-            embed = discord.Embed(title=name[-1], url="https://trackmania.io/#/totd", description="Trackmania's Track Of The Day")
-            embed.add_field(name="Author's Username", value=author_name[-1], inline=True)
+            embed = discord.Embed(title=name, url="https://trackmania.io/#/totd", description="Trackmania's Track Of The Day")
+            embed.add_field(name="Author's Username", value=author_name, inline=True)
             embed.add_field(name="Author's Time", value=author_time, inline=True)
-            embed.set_image(url=thumbnail[-1])
+            embed.set_image(url=thumbnail)
 
             await ctx.send(embed=embed)
 
