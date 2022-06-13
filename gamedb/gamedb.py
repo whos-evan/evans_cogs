@@ -71,9 +71,8 @@ class GameDB(commands.Cog):
             options = []
 
             for i in results:
-                result = results[1]
-                result = result.replace("'", '"')
-                print(result)
+                result = results[i]
+                result = str(result).replace("'", '"')
                 result = json.loads(str(result))
 
                 title = str(i) + ". " + result['name']
