@@ -95,7 +95,7 @@ class Trackmania(commands.Cog):
                 name = "No Record"
                 record_names.append(name)
 
-            time = wr_info['tops'][record_num]['player']['time']
+            time = wr_info['tops'][record_num]['time']
             try:
                 time = int(time[record_num])
                 time = time / 1000
@@ -294,7 +294,7 @@ class Trackmania(commands.Cog):
                         record_names.append(name)
 
                     try:
-                        time = wr_info['tops'][record_num]['player']['time']
+                        time = wr_info['tops'][record_num]['time']
                         time = time / 1000
                         record_times.append(time)
                     except:
