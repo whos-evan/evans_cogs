@@ -42,7 +42,7 @@ class GameDB(commands.Cog):
         }
         reqtype = self.session.post
         async with reqtype(url, headers=headers, data=data) as req:
-            result = await req.json()
+            result = await req.text()
             status = req.status
         return result, status
 
@@ -66,6 +66,7 @@ class GameDB(commands.Cog):
             response = await self.req(url='https://api.igdb.com/v4/games', creds=creds, data=data)
             raw = response[0]
             results = json.loads(raw)
+            print(results)
 
             embeds = []
             options = []
@@ -83,7 +84,7 @@ class GameDB(commands.Cog):
                 option = discord.SelectOption(label=title, description=short_summary)
                 options.append(option)
 
-                embed=discord.Embed(title=name, url=url, description=summary)
+                embed = discord.Embed(title=name, url=url, description=summary)
                 embeds.append(embed)
 
                 class Dropdown(discord.ui.Select):
