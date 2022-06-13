@@ -52,13 +52,13 @@ class Trackmania(commands.Cog):
     async def track_embed(self, map_info: str, number: int = 0, return_important: bool = False):
 #        try:
         track_id = map_info[number]['TrackID']
+        track_id = str(track_id)
 
         url = f"https://trackmania.exchange/maps/{track_id}"
 
         author_name = map_info[number]['Username']
         author_time = map_info[number]['AuthorTime']
 
-        author_time = int(author_time)
         author_time = author_time / 1000
         author_time = datetime.timedelta(seconds=author_time)
         author_time = str(author_time)
@@ -68,6 +68,7 @@ class Trackmania(commands.Cog):
         length = map_info[number]['LengthName']
         difficulty = map_info[number]['DifficultyName']
         award_count = map_info[number]['AwardCount']
+        award_count = str(award_count)
         track_photo = str("https://trackmania.exchange/tracks/screenshot/normal/" + track_id)
         track_desc = str("Map ID: " + track_id)
 
