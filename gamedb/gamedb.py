@@ -65,8 +65,8 @@ class GameDB(commands.Cog):
             data = f'search "{search_term}"; fields name,platforms,summary,rating,screenshots,url; limit 50;'
             response = await self.req(url='https://api.igdb.com/v4/games', creds=creds, data=data)
             raw = response[0]
+            await ctx.send(raw[:100])
             results = json.loads(raw)
-            await ctx.send(type(results))
 
             embeds = []
             options = []
