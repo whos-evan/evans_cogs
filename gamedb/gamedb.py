@@ -66,13 +66,12 @@ class GameDB(commands.Cog):
             response = await self.req(url='https://api.igdb.com/v4/games', creds=creds, data=data)
             raw = response[0]
             results = json.loads(raw)
-            print(results[0])
 
             embeds = []
             options = []
 
             for i in len(results):
-                result = results[i]
+                result = results[1]
                 result = json.loads(str(result))
 
                 title = str(i) + ". " + result['name']
