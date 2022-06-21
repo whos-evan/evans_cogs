@@ -49,6 +49,7 @@ class GameDB(commands.Cog):
         if await self.bot.get_shared_api_tokens("twitch") is None:
             await ctx.send('You need to set your api keys with ``[p]gamedb api``.')
         else:
+            await ctx.send('testing')
             creds = await self.bot.get_shared_api_tokens("twitch")
             wrapper = IGDBWrapper(creds['client_id'], creds['access_token'])
             byte_array = wrapper.api_request(
@@ -56,11 +57,5 @@ class GameDB(commands.Cog):
             f'fields name, summary, cover; offset 0; where name="{search_term}"*;',
             
           )
-            print(byte_array)
-            games = json.loads(byte_array)
-            print(games)
-            for game in games:
-                name = game['name']
-                summary = game['summary']
-                url = game['url']
-                await ctx.send(f'{url}\n{name} - {summary}')
+            data = json.loads(byte_array)
+            print(data)
