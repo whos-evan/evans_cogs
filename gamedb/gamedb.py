@@ -11,6 +11,8 @@ from redbot.core.config import Config
 from redbot.core.utils.chat_formatting import pagify
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
+from igdb.wrapper import IGDBWrapper
+
 
 class GameDB(commands.Cog):
     """
@@ -32,20 +34,6 @@ class GameDB(commands.Cog):
     async def cog_unload(self):
         await self.client.close()
 
-    async def req(self, url, creds, data):
-        headers = {
-            "User-Agent": "Discord-Bot for Pulling Information About Video Games",
-            "From": "contact@is-a.win",
-            'Accept': 'application/json',
-            "Client-ID": creds['client_id'],
-            "Authorization": f"Bearer {creds['access_token']}"
-        }
-        reqtype = self.session.post
-        async with reqtype(url, headers=headers, data=data) as req:
-            result = await req.text()
-            status = req.status
-        return result, status
-
     @commands.group()
     async def gamedb(self, ctx):
         """Group of commands for looking up video games."""
@@ -62,45 +50,9 @@ class GameDB(commands.Cog):
             await ctx.send('You need to set your api keys with ``[p]gamedb api``.')
         else:
             creds = await self.bot.get_shared_api_tokens("twitch")
-            data = f'search "{search_term}"; fields name,platforms,summary,rating,screenshots,url; limit 50;'
-            response = await self.req(url='https://api.igdb.com/v4/games', creds=creds, data=data)
-            raw = response[0]
-            results = json.loads(raw)
-            print(results)
-
-            embeds = []
-            options = []
-
-            for i in results:
-                result = results[i]
-                result = str(result).replace("'", '"')
-                result = json.loads(str(result))
-
-                title = str(i) + ". " + result['name']
-                name = result['name']
-                url = result['url']
-                summary = result['summary']
-                short_summary = summary[:20] + "..."
-
-                option = discord.SelectOption(label=title, description=short_summary)
-                options.append(option)
-
-                embed = discord.Embed(title=name, url=url, description=summary)
-                embeds.append(embed)
-
-                class Dropdown(discord.ui.Select):
-                    def __init__(self):
-                        super().__init__(placeholder="Select an option",max_values=1,min_values=1,options=options)
-                    async def callback(self, interaction: discord.Interaction):
-                        num = self.values[0].split(' - ')[0]
-                        await interaction.response.send_message(content=None, embed=embeds[int(num)], ephemeral=True)
-                        
-
-                class SelectView(discord.ui.View):
-                    def __init__(self, *, timeout = 180):
-                        super().__init__(timeout=timeout)
-                        self.add_item(Dropdown())
-
-                await ctx.send('Choose the game you wish to view: ', view=SelectView())
-            
-            
+            wrapper = IGDBWrapper(creds['client_id'], creds['access_token'])
+            byte_array = wrapper.api_request(
+            'games',
+            f'fields name, summary, cover; offset 0; where name="{search_term}"*;',
+            )
+            print(byte_array)
