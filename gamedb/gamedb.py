@@ -56,7 +56,7 @@ class GameDB(commands.Cog):
             f'fields name, summary, cover; offset 0; where name="{search_term}"*;',
             
           )
-            
+            print(byte_array)
             games = json.loads(byte_array)
             print(games)
             for game in games:
