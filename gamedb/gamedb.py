@@ -55,4 +55,8 @@ class GameDB(commands.Cog):
             'games',
             f'fields name, summary, cover; offset 0; where name="{search_term}"*;',
             )
-            print(byte_array)
+            for i in range(len(byte_array)):
+                name = byte_array[i]['name']
+                summary = byte_array[i]['summary']
+                url = byte_array[i]['url']
+                await ctx.send(f'{url}\n{name} - {summary}')
