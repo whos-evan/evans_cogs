@@ -51,12 +51,12 @@ class GameDB(commands.Cog):
         else:
             creds = await self.bot.get_shared_api_tokens("twitch")
             wrapper = IGDBWrapper(creds['client_id'], creds['access_token'])
-            byte_array = wrapper.api_request(
+            games = wrapper.api_request(
             'games',
             f'fields name, summary, cover; offset 0; where name="{search_term}"*;',
             )
-            for i in range(len(byte_array)):
-                name = byte_array['name'][i]
-                summary = byte_array['summary'][i]
-                url = byte_array['url'][i]
+            for game in games:
+                name = games['name']
+                summary = games['summary']
+                url = games['url']
                 await ctx.send(f'{url}\n{name} - {summary}')
