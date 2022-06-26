@@ -31,8 +31,9 @@ class Streaming(commands.Cog):
 
         self.session = aiohttp.ClientSession()
 
+        self.config.register_guild(**default_guild)
         self.config.init_custom("StreamingGroup", 1)
-        self.config.register_custom("CustomGuildGroup", **default_guild)
+        self.config.register_custom("StreamingGroup", **default_guild)
 
     def format_help_for_context(self, ctx):
         """Thanks Sinbad."""
