@@ -104,7 +104,6 @@ class Streaming(commands.Cog):
         vc = ctx.guild.get_channel(vc)
 
         event = await ctx.guild.create_scheduled_event(name='Kazwire is live!', description=f'Kazwire is currently live on YouTube! Link: https://youtube.com/channel/{channel}/live', channel=vc, entity_type=discord.EntityType.voice, start_time=utils.utcnow() + timedelta(minutes=1)) # don't hard code this (channel name)
-        await event.start(reason='Streamer is live!')
 
 
     @streaming.command(name="check")
