@@ -91,7 +91,7 @@ class Streaming(commands.Cog):
         else:
             url = f'https://youtube.com/channel/{channel}/live'
             async with self.session.get(url) as resp:
-                data = resp.text()
+                data = await resp.text()
                 print(data)
             if '{"text":" watching now"}' in data:
                 return True
