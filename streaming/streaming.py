@@ -84,6 +84,7 @@ class Streaming(commands.Cog):
     async def is_live(self, ctx):
         channel = await self.config.custom("StreamingGroup", ctx.guild.id).channel()
 #        youtube_api = await self.bot.get_shared_api_tokens("youtube")
+        print(channel)
 
         if channel is None:
             return False
@@ -91,6 +92,7 @@ class Streaming(commands.Cog):
             url = f'https://youtube.com/channel/{channel}/live'
             async with self.session.get(url) as resp:
                 data = resp.text
+                print(data)
             if '{"text":" watching now"}' in data:
                 return True
             else:
