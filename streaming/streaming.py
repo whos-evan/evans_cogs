@@ -74,7 +74,7 @@ class Streaming(commands.Cog):
             await self.config.custom("StreamingGroup", ctx.guild.id).vc.set(None)
             await ctx.send("Voice chat has been cleared.")
         else:
-            if await ctx.guild.get_channel(vc) is None:
+            if ctx.guild.get_channel(vc) is None:
                 await ctx.send("Voice chat does not exist.")
             else:
                 await self.config.custom("StreamingGroup", ctx.guild.id).vc.set(vc)
