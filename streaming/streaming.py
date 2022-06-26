@@ -92,7 +92,6 @@ class Streaming(commands.Cog):
             url = f'https://youtube.com/channel/{channel}/live'
             async with self.session.get(url) as resp:
                 data = await resp.text()
-                print(data)
             if '{"text":" watching now"}' in data:
                 return True
             else:
@@ -102,7 +101,7 @@ class Streaming(commands.Cog):
         channel = await self.config.custom("StreamingGroup", ctx.guild.id).channel()
 
         vc = await self.config.custom("StreamingGroup", ctx.guild.id).vc()
-        vc = ctx.get_channel(vc)
+        vc = ctx.guild.get_channel(vc)
 
         await ctx.guild.create_scheduled_event(name='Kazwire is live!', description=f'Kazwire is currently live on YouTube! Link: https://youtube.com/channel/{channel}/live', channel=vc, entity_type=discord.EntityType.voice, start_time=utils.utcnow() + timedelta(minutes=1)) # don't hard code this (channel name)
         await ctx.start(reason='Streamer is live!')
