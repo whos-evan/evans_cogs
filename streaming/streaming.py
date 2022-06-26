@@ -106,7 +106,13 @@ class Streaming(commands.Cog):
         await ctx.start(reason='Streamer is live!')
 
 
-    @tasks.loop(seconds=60)
-    async def check_streams(self):
-        if await self.is_live() is True:
-            await self.create_streaming_event()
+    @streaming.command(name="check")
+    async def check(self, ctx):
+        """
+        Check if a streamer is live.
+        """
+
+        if await self.is_live(ctx):
+            await self.create_streaming_event(ctx)
+        else:
+            await ctx.send("Streamer is not live.")
