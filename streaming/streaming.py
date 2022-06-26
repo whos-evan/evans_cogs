@@ -8,7 +8,7 @@ import discord
 from discord import utils
 from discord.ext import tasks
 
-from redbot.core import commands
+from redbot.core import commands, Config
 from redbot.core.bot import Red
 from redbot.core.config import Config
 
