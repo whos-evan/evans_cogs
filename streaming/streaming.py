@@ -31,6 +31,11 @@ class Streaming(commands.Cog):
 
         self.session = aiohttp.ClientSession()
 
+        default_guild = {
+            "channel": "UCWjGQfoEddPru_KC9zYfLig",
+            "vc": 857724922113294346
+        }
+
         self.config.register_guild(**default_guild)
         self.config.init_custom("StreamingGroup", 1)
         self.config.register_custom("StreamingGroup", **default_guild)
