@@ -1,0 +1,21 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Cog-Creators/Red-DiscordBot/V3/develop/schema/red_cog.schema.json",
+    "name": "Streaming",
+    "short": "Performs actions when a streamer goes live.",
+    "description": "Performs actions when a streamer goes live. [Warning: there are things that are hardcoded in here]",
+    "end_user_data_statement": "Stores data about YouTube Account URL.",
+    "install_msg": "Thanks. Warning: hardcoded things are in this cog.",
+    "author": [
+        "evan_"
+    ],
+    "required_cogs": {},
+    "requirements": [],
+    "tags": [
+        "youtube",
+        "stream"
+    ],
+    "min_bot_version": "3.3.10",
+    "hidden": false,
+    "disabled": false,
+    "type": "COG"
+}
