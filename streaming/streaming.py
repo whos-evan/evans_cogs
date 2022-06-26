@@ -51,7 +51,7 @@ class Streaming(commands.Cog):
     
     @streaming.command(name="setchannel")
     @commands.admin_or_permissions(manage_guild=True)
-    async def streaming_setchannel(self, ctx, channel: str):
+    async def setchannel(self, ctx, channel: str):
         """
         Set the channel to check for live streams.
         """
@@ -65,7 +65,7 @@ class Streaming(commands.Cog):
 
     @streaming.command(name="setvoicechat")
     @commands.admin_or_permissions(manage_guild=True)
-    async def streaming_setchannel(self, ctx, vc: int):
+    async def setvoicechat(self, ctx, vc: int):
         """
         Set the voice channel to set for the event creation.
         """
