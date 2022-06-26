@@ -115,6 +115,6 @@ class Streaming(commands.Cog):
         """
 
         if await self.is_live(ctx=ctx):
-            await self.create_streaming_event()
+            await self.create_streaming_event(ctx=ctx)
         else:
             await ctx.send("Streamer is not live.")
