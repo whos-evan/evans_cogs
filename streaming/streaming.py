@@ -83,9 +83,9 @@ class Streaming(commands.Cog):
     # check if a youtube channel is live using youtube api
     async def is_live(self, ctx):
         channel = await self.config.custom("StreamingGroup", ctx.guild.id).channel()
-        youtube_api = await self.bot.get_shared_api_tokens("youtube")
+#        youtube_api = await self.bot.get_shared_api_tokens("youtube")
 
-        if channel or youtube_api is None:
+        if channel is None:
             return False
         else:
             url = f'https://youtube.com/channel/{channel}/live'
