@@ -112,7 +112,7 @@ class Streaming(commands.Cog):
         Check if a streamer is live.
         """
 
-        if await self.is_live(self, ctx):
-            await self.create_streaming_event(self, ctx)
+        if await self.is_live():
+            await self.create_streaming_event()
         else:
             await ctx.send("Streamer is not live.")
