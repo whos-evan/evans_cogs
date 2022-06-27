@@ -79,6 +79,23 @@ class Streaming(commands.Cog):
             else:
                 await self.config.custom("StreamingGroup", ctx.guild.id).vc.set(vc)
                 await ctx.send("Voice chat set to {}".format(vc))
+
+    @streaming.command(name="setalertchannel")
+    @commands.admin_or_permissions(manage_guild=True)
+    async def setalertchannel(self, ctx, channel: int):
+        """
+        Set the voice channel to set for the event creation.
+        """
+
+        if channel is None:
+            await self.config.custom("StreamingGroup", ctx.guild.id).alert.set(None)
+            await ctx.send("Voice chat has been cleared.")
+        else:
+            if ctx.guild.get_channel(channel) is None:
+                await ctx.send("Chat does not exist.")
+            else:
+                await self.config.custom("StreamingGroup", ctx.guild.id).vc.set(channel)
+                await ctx.send("Chat set to {}".format(channel))
     
     # check if a youtube channel is live using youtube api
     async def is_live(self, ctx):
@@ -103,10 +120,17 @@ class Streaming(commands.Cog):
         vc = await self.config.custom("StreamingGroup", ctx.guild.id).vc()
         vc = ctx.guild.get_channel(vc)
 
-        event = await ctx.guild.create_scheduled_event(name='Kazwire is live!', description=f'Kazwire is currently live on YouTube! Link: https://youtube.com/channel/{channel}/live', channel=vc, entity_type=discord.EntityType.voice, start_time=utils.utcnow() + timedelta(minutes=1)) # don't hard code this (channel name)
+        await ctx.guild.create_scheduled_event(name='Kazwire is live!', description=f'Kazwire is currently live on YouTube! Link: https://youtube.com/channel/{channel}/live', channel=vc, entity_type=discord.EntityType.voice, start_time=utils.utcnow() + timedelta(minutes=1)) # don't hard code this (channel name)
 
+#    async def send_alert(self, ctx):
+#        alert_channel = await self.config.custom("StreamingGroup", ctx.guild.id).alert()
+#
+#        if alert_channel is not None:
+#            alert_channel = ctx.guild.get_channel(alert_channel)
+#            await alert_channel.send('Kazwire is live!')
 
     @streaming.command(name="check")
+    @commands.admin_or_permissions(manage_guild=True)
     async def check(self, ctx):
         """
         Check if a streamer is live.
