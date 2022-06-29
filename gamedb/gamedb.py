@@ -54,8 +54,7 @@ class GameDB(commands.Cog):
             wrapper = IGDBWrapper(creds['client_id'], creds['access_token'])
             byte_array = wrapper.api_request(
             'games',
-            f'fields name, summary, cover; offset 0; where name="{search_term}"*;',
-            
+            f'fields name, summary, cover; offset 0; where name="{search_term}"*;'
           )
             data = json.loads(byte_array)
             print(data)
