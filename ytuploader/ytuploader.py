@@ -49,4 +49,4 @@ class YTUploader(commands.Cog):
                 parser.add_argument("--privacy_status")
 
                 args = parser.parse_args(args.split())
-                ctx.send(f'Title: {args.title} | Description: {args.description} | Tags: {args.tags} | Category: {args.category} | Privacy Status: {args.privacy_status}')
+                await ctx.send(f'Title: {args.title} | Description: {args.description} | Tags: {args.tags} | Category: {args.category} | Privacy Status: {args.privacy_status}')
