@@ -43,11 +43,11 @@ class YTUploader(commands.Cog):
                 video  = await ctx.message.attachments[0].read()
 
                 parser = argparse.ArgumentParser()
-                parser.add_argument("--title")
-                parser.add_argument("--description")
-                parser.add_argument("--tags")
-                parser.add_argument("--category")
-                parser.add_argument("--privacy_status")
+                parser.add_argument("--title", nargs='*')
+                parser.add_argument("--description", nargs='*')
+                parser.add_argument("--tags", nargs='*')
+                parser.add_argument("--category", nargs='*')
+                parser.add_argument("--privacy_status", nargs='*')
 
                 try:
                     args = parser.parse_args(args.split())
