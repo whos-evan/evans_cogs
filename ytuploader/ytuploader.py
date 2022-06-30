@@ -38,7 +38,7 @@ class YTUploader(commands.Cog):
 
     @yt.command(name="upload")
     @commands.is_owner()
-    async def upload(self, ctx, *, args):
+    async def upload(self, ctx):
             if ctx.message.attachments:
                 video  = await ctx.message.attachments[0].read()
 
