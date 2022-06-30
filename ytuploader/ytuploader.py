@@ -52,5 +52,5 @@ class YTUploader(commands.Cog):
                 try:
                     args = parser.parse_args(args.split())
                     await ctx.send(f'Title: {args.title} | Description: {args.description} | Tags: {args.tags} | Category: {args.category} | Privacy Status: {args.privacy_status}')
-                except Exception as e:
-                    await ctx.send(f'Error: {e}')
+                except SystemExit:
+                    await ctx.send(f'Error. Please check your arguments.')
