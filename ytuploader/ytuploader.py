@@ -2,6 +2,7 @@
 import asyncio
 import datetime
 import argparse
+from logging import exception
 
 import discord
 from discord.ext import commands
@@ -48,5 +49,8 @@ class YTUploader(commands.Cog):
                 parser.add_argument("--category")
                 parser.add_argument("--privacy_status")
 
-                args = parser.parse_args(args.split())
-                await ctx.send(f'Title: {args.title} | Description: {args.description} | Tags: {args.tags} | Category: {args.category} | Privacy Status: {args.privacy_status}')
+                try:
+                    args = parser.parse_args(args.split())
+                    await ctx.send(f'Title: {args.title} | Description: {args.description} | Tags: {args.tags} | Category: {args.category} | Privacy Status: {args.privacy_status}')
+                except Exception as e:
+                    await ctx.send(f'Error: {e}')
