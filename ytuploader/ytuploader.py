@@ -47,21 +47,21 @@ class YTUploader(commands.Cog):
 
                 try:
                     await ctx.send('Please type the title of the video.')
-                    title_message = await self.bot.wait_for(event = 'message', check = check, timeout = 60.0)
+                    title_message = await self.bot.wait_for('message', check = check, timeout = 60.0)
                     title = title_message.content
                 except asyncio.TimeoutError:
                     await ctx.send('Timed out.')
                 else:
                     try:
                         await ctx.send('Please type the description of the video.')
-                        description_message = await self.bot.wait_for(event = 'message', check = check, timeout = 60.0)
+                        description_message = await self.bot.wait_for('message', check = check, timeout = 60.0)
                         description = description_message.content
                     except asyncio.TimeoutError:
                         await ctx.send('Timed out.')
                     else:
                         try:
                             await ctx.send('Please type the tags of the video.')
-                            tags_message = await self.bot.wait_for(event = 'message', check = check, timeout = 60.0)
+                            tags_message = await self.bot.wait_for('message', check = check, timeout = 60.0)
                             tags = tags_message.content
                             tags = tags.split(', ')
                         except asyncio.TimeoutError:
@@ -69,21 +69,21 @@ class YTUploader(commands.Cog):
                         else:
                             try:
                                 await ctx.send('Please select the category number.\n20 - Gaming\n21 - Videoblogging\n23 - Comedy\n24 - Entertainment\n25 - News & Politics\n27 - Education\n28 - Science & Technology\n42 - Shorts')
-                                category_message = await self.bot.wait_for(event = 'message', check = check, timeout = 60.0)
+                                category_message = await self.bot.wait_for('message', check = check, timeout = 60.0)
                                 category = category_message.content
                             except asyncio.TimeoutError:
                                 await ctx.send('Timed out.')
                             else:
                                 try:
                                     await ctx.send('Please select the privacy status of the video:\npublic\nunlisted\nprivate')
-                                    privacy_message = await self.bot.wait_for(event = 'message', check = check, timeout = 60.0)
+                                    privacy_message = await self.bot.wait_for('message', check = check, timeout = 60.0)
                                     privacy = privacy_message.content
                                 except asyncio.TimeoutError:
                                     await ctx.send('Timed out.')
                                 else:
                                     try:
                                         await ctx.send('Please upload the thumbnail of the video.')
-                                        thumbnail_message = await self.bot.wait_for(event = 'message', check = check, timeout = 60.0)
+                                        thumbnail_message = await self.bot.wait_for('message', check = check, timeout = 60.0)
                                         thumbnail = thumbnail_message.attachments[0].url
                                     except asyncio.TimeoutError:
                                         await ctx.send('Timed out.')
