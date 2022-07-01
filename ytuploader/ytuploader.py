@@ -93,13 +93,12 @@ class YTUploader(commands.Cog):
                 await ctx.send(f'Uploading the following:\nTitle: {title} | Description: {description} | Tags: {tags} | Category: {category} | Privacy: {privacy} | Thumbnail: {thumbnail}')
 
                 path = cog_data_path(self.bot.get_cog('YTUploader'))
-                print(str(path))
 
                 youtube_api = await self.bot.get_shared_api_tokens("youtube")
-                uploader = YoutubeUploader(client_id=youtube_api['client_id'],client_secret=youtube_api['client_secret'],secrets_file_path=f'{path}/secrets.json')
+                uploader = YoutubeUploader(client_id=youtube_api['client_id'],client_secret=youtube_api['client_secret'],secrets_file_path=f'{str(path)}/secrets.json')
 
                 youtube_oauth = await self.bot.get_shared_api_tokens("youtube_oauth")
-                uploader.authenticate(access_token=youtube_oauth['access_token'], refresh_token=youtube_oauth['refresh_token'], oauth_path=f'{path}/oauth.json')
+                uploader.authenticate(access_token=youtube_oauth['access_token'], refresh_token=youtube_oauth['refresh_token'], oauth_path=f'{str(path)}/oauth.json')
 
 
                 options = {
