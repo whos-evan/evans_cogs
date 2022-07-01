@@ -9,6 +9,7 @@ from discord.ext import commands
 from redbot.core import commands
 from redbot.core.bot import Red
 from redbot.core.config import Config
+from redbot.core.data_manager import cog_data_path
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 from youtube_upload.client import YoutubeUploader
@@ -91,11 +92,14 @@ class YTUploader(commands.Cog):
                                         await ctx.send('Timed out.')
                 await ctx.send(f'Uploading the following:\nTitle: {title} | Description: {description} | Tags: {tags} | Category: {category} | Privacy: {privacy} | Thumbnail: {thumbnail}')
 
+                path = self.bot.data_manager.cog_data_path(cog_instance=self)
+
                 youtube_api = await self.bot.get_shared_api_tokens("youtube")
-                uploader = YoutubeUploader(client_id=youtube_api['client_id'],client_secret=youtube_api['client_secret'],secrets_file_path=None)
+                uploader = YoutubeUploader(client_id=youtube_api['client_id'],client_secret=youtube_api['client_secret'],secrets_file_path=path)
 
                 youtube_oauth = await self.bot.get_shared_api_tokens("youtube_oauth")
-                uploader.authenticate(access_token=youtube_oauth['access_token'], refresh_token=youtube_oauth['refresh_token'])
+                uploader.authenticate(access_token=youtube_oauth['access_token'], refresh_token=youtube_oauth['refresh_token'], oauth_path=path)
+
 
                 options = {
                     "title" : title, # The video title
