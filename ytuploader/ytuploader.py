@@ -11,6 +11,8 @@ from redbot.core.bot import Red
 from redbot.core.config import Config
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
+from youtube_upload.client import YoutubeUploader
+
 
 class YTUploader(commands.Cog):
     """
@@ -87,7 +89,23 @@ class YTUploader(commands.Cog):
                                         thumbnail = thumbnail_message.attachments[0].url
                                     except asyncio.TimeoutError:
                                         await ctx.send('Timed out.')
-                await ctx.send(f'Title: {title} | Description: {description} | Tags: {tags} | Category: {category} | Privacy: {privacy} | Thumbnail: {thumbnail}')
+                await ctx.send(f'Uploading the following:\nTitle: {title} | Description: {description} | Tags: {tags} | Category: {category} | Privacy: {privacy} | Thumbnail: {thumbnail}')
 
+                youtube_api = await self.bot.get_shared_api_tokens("youtube")
+                uploader = YoutubeUploader(client_id=youtube_api['client_id'],client_secret=youtube_api['client_secret'])
+
+                youtube_oauth = await self.bot.get_shared_api_tokens("youtube_oauth")
+                uploader.authenticate(access_token=youtube_oauth['access_token'], refresh_token=youtube_oauth['refresh_token'])
+
+                options = {
+                    "title" : title, # The video title
+                    "description" : description, # The video description
+                    "tags" : tags,
+                    "categoryId" : category,
+                    "privacyStatus" : privacy, # Video privacy. Can either be "public", "private", or "unlisted"
+                    "kids" : False, # Specifies if the Video if for kids or not. Defaults to False.
+                    "thumbnailLink" : thumbnail # Optional. Specifies video thumbnail.
+                }
+                uploader.upload_stream(video, options=options)
             else:
                 await ctx.send("You didn't attach a video that I can upload to YouTube.")
