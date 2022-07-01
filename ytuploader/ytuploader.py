@@ -92,7 +92,7 @@ class YTUploader(commands.Cog):
                                         await ctx.send('Timed out.')
                 await ctx.send(f'Uploading the following:\nTitle: {title} | Description: {description} | Tags: {tags} | Category: {category} | Privacy: {privacy} | Thumbnail: {thumbnail}')
 
-                path = self.bot.data_manager.cog_data_path(cog_instance=self)
+                path = cog_data_path(self.bot.get_cog('YTUploader'))
 
                 youtube_api = await self.bot.get_shared_api_tokens("youtube")
                 uploader = YoutubeUploader(client_id=youtube_api['client_id'],client_secret=youtube_api['client_secret'],secrets_file_path=path)
