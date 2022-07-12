@@ -102,7 +102,7 @@ class VLC(commands.Cog):
         await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
         message = await self.bot.wait_for('message', check=check, timeout=60.0)
         number = int(message.content)
-        if number > len(200000):
+        if number > 200000:
             await ctx.send("Number invalid.")
         elif number < 0:
             await ctx.send("Number invalid.")
