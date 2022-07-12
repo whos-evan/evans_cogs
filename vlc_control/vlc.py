@@ -88,11 +88,11 @@ class VLC(commands.Cog):
         items = []
         searched_items = []
         times = 0
-        async for elem in root.iter('item'):
+        for elem in root.iter('item'):
             
             items.append(elem.attrib)
         
-        async for item in items:
+        for item in items:
             times += 1
             if search in str(item):
                 searched_items.append(str(times) + ' - ' + item['name'])
