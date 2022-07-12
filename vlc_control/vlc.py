@@ -105,5 +105,8 @@ class VLC(commands.Cog):
         number = int(message.content)
         item_id = items[number]['id']
         item_id = item_id.replace('plid_', '')
-        await ctx.send(f'Requesting to url: {url}/requests/status.xml?command=pl_play&id={item_id}')
-        await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={item_id}', auth=aiohttp.BasicAuth('', password=password))
+        request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={item_id}', auth=aiohttp.BasicAuth('', password=password))
+        if request.status == 200:
+            await ctx.send(f"Playing: {items[number]['name']}")
+        else:
+            await ctx.send("Error while searching for that item number. Please try again.")
