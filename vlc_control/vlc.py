@@ -80,7 +80,7 @@ class VLC(commands.Cog):
         """Search for stuff in VLC"""
         url = await self.config.custom("VLCGroup", ctx.guild.id).url()
         password = await self.config.custom("VLCGroup", ctx.guild.id).password()
-        full_search = await self.session.get(f'{url}requests/playlist_jstree.xml', auth=aiohttp.BasicAuth('', password=password))
+        full_search = await self.session.get(f'{url}/requests/playlist_jstree.xml', auth=aiohttp.BasicAuth('', password=password))
         full_search = full_search.text
         root = ET.fromstring(full_search)
 
@@ -103,4 +103,4 @@ class VLC(commands.Cog):
         item_id = items[number]['id']
         item_id = item_id.replace('plid', '')
 
-        self.session.get(f'{url}requests/status.xml?command=pl_play&id={item_id}', auth=aiohttp.BasicAuth('', password=password))
+        self.session.get(f'{url}/requests/status.xml?command=pl_play&id={item_id}', auth=aiohttp.BasicAuth('', password=password))
