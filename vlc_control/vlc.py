@@ -109,7 +109,7 @@ class VLC(commands.Cog):
             await ctx.send("Number invalid.")
         else:
             for i in searched_items:
-                if number in searched_items:
+                if str(number) in searched_items:
                     requested = searched_items[i]
             request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
             if request.status == 200:
