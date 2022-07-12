@@ -93,12 +93,7 @@ class VLC(commands.Cog):
                 for item in searched:
                     searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
 
-        non_dups_searched_items = []
-        for i in searched_items:
-            if i not in non_dups_searched_items:
-                searched_items.append(i)
-
-        searched_list = '\n'.join(non_dups_searched_items)
+        searched_list = '\n'.join(searched_items)
 
         def check(m: discord.Message):  # m = discord.Message.
             return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id 
