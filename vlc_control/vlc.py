@@ -108,9 +108,9 @@ class VLC(commands.Cog):
         elif number < 0:
             await ctx.send("Number invalid.")
         else:
-            for i in searched_items:
-                if str(number) in searched_items:
-                    requested = searched_items[i]
+            for item in searched_items:
+                if str(number) in item.split(' - ')[0]:
+                    requested = item
             request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
             if request.status == 200:
                 await ctx.send(f"Playing: {requested}")
