@@ -93,6 +93,7 @@ class VLC(commands.Cog):
                 for item in searched:
                     searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
 
+        searched_items = list( dict.fromkeys(searched_items) )
         searched_list = '\n'.join(searched_items)
 
         def check(m: discord.Message):  # m = discord.Message.
