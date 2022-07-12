@@ -81,6 +81,7 @@ class VLC(commands.Cog):
         url = await self.config.custom("VLCGroup", ctx.guild.id).url()
         password = await self.config.custom("VLCGroup", ctx.guild.id).password()
         full_search = await self.session.get(f'{url}/requests/playlist_jstree.xml', auth=aiohttp.BasicAuth('', password=password))
+        print(full_search.text)
         full_search = full_search.text
         root = ET.fromstring(full_search)
 
