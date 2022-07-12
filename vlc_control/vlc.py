@@ -84,18 +84,21 @@ class VLC(commands.Cog):
         full_search = await full_search.text()
         root = ET.fromstring(full_search)
 
-        items = []
         searched_items = []
-        times = 0
-        for elem in root.iter('item'):
-            
-            items.append(elem.attrib)
         
-        for item in items:
-            times += 1
-            if search in str(item):
-                searched_items.append(item['id'].replace('plid_', '') + ' - ' + item['name'])
-                searched_list = '\n'.join(searched_items)
+        for item in root.findall('.//item/*'):
+            if search in str(item.attrib):
+                searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
+                searched = item.findall('.//item')
+                for item in searched:
+                    searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
+
+        non_dups_searched_items = []
+        for i in searched_items:
+            if i not in non_dups_searched_items:
+                searched_items.append(i)
+
+        searched_list = '\n'.join(non_dups_searched_items)
 
         def check(m: discord.Message):  # m = discord.Message.
             return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id 
@@ -103,7 +106,7 @@ class VLC(commands.Cog):
         await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
         message = await self.bot.wait_for('message', check=check, timeout=60.0)
         number = int(message.content)
-        if number > len(items):
+        if number > len(200000):
             await ctx.send("Number invalid.")
         elif number < 0:
             await ctx.send("Number invalid.")
