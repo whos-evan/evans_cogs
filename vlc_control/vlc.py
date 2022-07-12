@@ -94,6 +94,7 @@ class VLC(commands.Cog):
         for item in items:
             times += 1
             if search in str(item):
+                print(item)
                 searched_items.append(str(times) + ' - ' + item['name'])
                 searched_list = '\n'.join(searched_items)
 
