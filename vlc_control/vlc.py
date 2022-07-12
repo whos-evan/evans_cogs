@@ -94,8 +94,7 @@ class VLC(commands.Cog):
         for item in items:
             times += 1
             if search in str(item):
-                print(item)
-                searched_items.append(str(times) + ' - ' + item['name'])
+                searched_items.append(item['id'].replace('plid_', '') + ' - ' + item['name'])
                 searched_list = '\n'.join(searched_items)
 
         def check(m: discord.Message):  # m = discord.Message.
@@ -104,8 +103,6 @@ class VLC(commands.Cog):
         await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
         message = await self.bot.wait_for('message', check=check, timeout=60.0)
         number = int(message.content)
-        item_id = items[number]['id']
-        item_id = item_id.replace('plid_', '')
         request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={item_id}', auth=aiohttp.BasicAuth('', password=password))
         if request.status == 200:
             await ctx.send(f"Playing: {items[number]['name']}")
