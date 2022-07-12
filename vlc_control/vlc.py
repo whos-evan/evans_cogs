@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 import discord
 from discord.ext import commands
-from redbot.core import commands
+from redbot.core import commands, Config
 from redbot.core.bot import Red
 from redbot.core.config import Config
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
@@ -21,6 +21,11 @@ class VLC(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession()
+        self.config = Config.get_conf(
+            self,
+            identifier=929150000791965787,
+            force_registration=True
+        )
 
         default_guild = {
             "url": "http://localhost:8080",
