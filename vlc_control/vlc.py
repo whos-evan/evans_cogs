@@ -102,5 +102,5 @@ class VLC(commands.Cog):
         number = int(message.content)
         item_id = items[number]['id']
         item_id = item_id.replace('plid', '')
-
+        print(f'{url}/requests/status.xml?command=pl_play&id={item_id}')
         await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={item_id}', auth=aiohttp.BasicAuth('', password=password))
