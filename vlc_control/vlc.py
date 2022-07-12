@@ -103,8 +103,13 @@ class VLC(commands.Cog):
         await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
         message = await self.bot.wait_for('message', check=check, timeout=60.0)
         number = int(message.content)
-        request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
-        if request.status == 200:
-            await ctx.send(f"Playing: {items[number]['name']}")
+        if number > len(items):
+            await ctx.send("Number invalid.")
+        elif number < 0:
+            await ctx.send("Number invalid.")
         else:
-            await ctx.send("Error while searching for that item number. Please try again.")
+            request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
+            if request.status == 200:
+                await ctx.send(f"Playing: {items[number]['name']}")
+            else:
+                await ctx.send("Error while searching for that item number. Please try again.")
