@@ -99,7 +99,7 @@ class VLC(commands.Cog):
                 searched_list = '\n'.join(searched_items)
         
         await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
-        message = await ctx.guild.wait_for('message', check=lambda m: m.author == ctx.author)
+        message = await self.bot.wait_for('message', check=lambda m: m.author == ctx.author)
         number = int(message.content)
         item_id = items[number]['id']
         item_id = item_id.replace('plid', '')
