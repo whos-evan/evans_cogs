@@ -96,7 +96,7 @@ class VLC(commands.Cog):
             times += 1
             if search in str(item):
                 searched_items.append(str(times) + ' - ' + item['name'])
-                searched_list = searched_items.join('\n')
+                searched_list = '\n'.join(searched_items)
         
         await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
         message = await ctx.guild.wait_for('message', check=lambda m: m.author == ctx.author)
