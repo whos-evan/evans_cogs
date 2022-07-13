@@ -87,7 +87,7 @@ class VLC(commands.Cog):
         searched_items = []
         
         for item in root.findall('.//item/*'):
-            if search in str(item.attrib):
+            if search.lower() in str(item.attrib).lower():
                 searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
                 searched = item.findall('.//item')
                 for item in searched:
@@ -99,19 +99,27 @@ class VLC(commands.Cog):
         def check(m: discord.Message):  # m = discord.Message.
             return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id 
         
-        await ctx.send(f"{len(searched_items)} results found.\n{searched_list}")
-        message = await self.bot.wait_for('message', check=check, timeout=60.0)
-        number = int(message.content)
-        if number > 200000:
-            await ctx.send("Number invalid.")
-        elif number < 0:
-            await ctx.send("Number invalid.")
+        if len(searched_items) == 0:
+            await ctx.send("No results found.")
         else:
-            for item in searched_items:
-                if str(number) in item.split(' - ')[0]:
-                    requested = item
-            request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
-            if request.status == 200:
-                await ctx.send(f"Playing: {requested}")
-            else:
+            await ctx.send(f"{len(searched_items)} results found. Please type the number next to the item you wish to play.\n{searched_list}")
+            try:
+                message = await self.bot.wait_for('message', check=check, timeout=60.0)
+                number = int(message.content)
+                if number > 200000:
+                    await ctx.send("Number invalid.")
+                elif number < 0:
+                    await ctx.send("Number invalid.")
+                else:
+                    for item in searched_items:
+                        if str(number) in item.split(' - ')[0]:
+                            requested = item
+                    request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
+                    if request.status == 200:
+                        await ctx.send(f"Playing: {requested}")
+                    else:
+                        await ctx.send("Error while searching for that item number. Please try again.")
+            except asyncio.TimeoutError:
+                await ctx.send("Timed out.")
+            except:
                 await ctx.send("Error while searching for that item number. Please try again.")
