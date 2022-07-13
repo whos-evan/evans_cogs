@@ -112,7 +112,7 @@ class VLC(commands.Cog):
                     searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
                     searched = item.findall('.//item')
                     for item in searched:
-                        searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'])
+                        searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'].replace('RARBG', ''))
 
             searched_items = list( dict.fromkeys(searched_items) )
             searched_list = '\n'.join(searched_items)
