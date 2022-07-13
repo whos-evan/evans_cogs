@@ -82,7 +82,7 @@ class VLC(commands.Cog):
         Set the modonly setting.
         """
         settings = await self.config.custom("VLCGroup", ctx.guild.id).modonly()
-        if settings is 'True':
+        if 'True' in settings:
             await self.config.custom("VLCGroup", ctx.guild.id).password.set('False')
             await ctx.send("Modonly has been disabled.")
         else:
