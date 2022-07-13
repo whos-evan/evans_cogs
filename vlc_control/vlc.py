@@ -109,7 +109,7 @@ class VLC(commands.Cog):
             
             for item in root.findall('.//item/*'):
                 if search.lower() in str(item.attrib).lower():
-                    searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'].replace('RARBG', ''))
+                    searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'].replace('RARBG', '').replace('ION10', ''))
                     searched = item.findall('.//item')
                     for item in searched:
                         searched_items.append(item.attrib['id'].replace('plid_', '') + ' - ' + item.attrib['name'].replace('RARBG', ''))
