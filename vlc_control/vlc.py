@@ -94,7 +94,7 @@ class VLC(commands.Cog):
     async def search(self, ctx, *, search: str):
         """Search for stuff in VLC"""
         modonly = await self.config.custom("VLCGroup", ctx.guild.id).modonly()
-        if modonly and not ctx.author.guild_permissions.administrator:
+        if 'True' in modonly and not ctx.author.guild_permissions.administrator:
             return
         else:
             url = await self.config.custom("VLCGroup", ctx.guild.id).url()
