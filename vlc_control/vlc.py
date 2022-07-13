@@ -30,7 +30,7 @@ class VLC(commands.Cog):
         default_guild = {
             "url": "http://localhost:8080",
             "password": "test",
-            "modonly": False
+            "modonly": 'False'
         }
 
         self.config.register_guild(**default_guild)
@@ -83,10 +83,10 @@ class VLC(commands.Cog):
         """
         settings = await self.config.custom("VLCGroup", ctx.guild.id).modonly()
         if settings is True:
-            await self.config.custom("VLCGroup", ctx.guild.id).password.set(False)
+            await self.config.custom("VLCGroup", ctx.guild.id).password.set('False')
             await ctx.send("Modonly has been disabled.")
         else:
-            await self.config.custom("VLCGroup", ctx.guild.id).password.set(True)
+            await self.config.custom("VLCGroup", ctx.guild.id).password.set('True')
             await ctx.send("Modonly has been enabled.")
 
     @vlc.command(name="search")
