@@ -124,20 +124,23 @@ class VLC(commands.Cog):
                 await ctx.send(f"{len(searched_items)} results found. Please type the number next to the item you wish to play.\n{searched_list}")
                 try:
                     message = await self.bot.wait_for('message', check=check, timeout=60.0)
-                    number = int(message.content)
-                    if number > 200000:
-                        await ctx.send("Number invalid.")
-                    elif number < 0:
-                        await ctx.send("Number invalid.")
-                    else:
-                        for item in searched_items:
-                            if str(number) in item.split(' - ')[0]:
-                                requested = item
-                        request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
-                        if request.status == 200:
-                            await ctx.send(f"Playing: {requested}")
+                    if message.content.isdigit():
+                        number = int(message.content)
+                        if number > 200000:
+                            await ctx.send("Number invalid.")
+                        elif number < 0:
+                            await ctx.send("Number invalid.")
                         else:
-                            await ctx.send("Error while searching for that item number. Please try again.")
+                            for item in searched_items:
+                                if str(number) in item.split(' - ')[0]:
+                                    requested = item
+                            request = await self.session.get(f'{url}/requests/status.xml?command=pl_play&id={number}', auth=aiohttp.BasicAuth('', password=password))
+                            if request.status == 200:
+                                await ctx.send(f"Playing: {requested}")
+                            else:
+                                await ctx.send("Error while searching for that item number. Please try again.")
+                    else:
+                        await ctx.send("You didn't provide a number.")
                 except asyncio.TimeoutError:
                     await ctx.send("Timed out.")
                 except:
