@@ -2,7 +2,6 @@
 import aiohttp
 
 import discord
-from discord import Select, View
 from discord.ext import commands
 from redbot.core import commands
 
