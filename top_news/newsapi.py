@@ -61,11 +61,11 @@ class NewsAPI(commands.Cog):
         if status != 200:
             return await ctx.send("Error: " + str(status))
         data = data.json()
-        if data["status"] is not "ok":
+        if data[0]["status"] is not "ok":
             return await ctx.send("Error.")
-        if data["totalResults"] == 0:
+        if data[0]["totalResults"] == 0:
             return await ctx.send("No results.")
         for i in range(4):
-            article = data["articles"][i]
+            article = data[0]["articles"][i]
             await ctx.send(embed=await self.news_embed(article))
         
