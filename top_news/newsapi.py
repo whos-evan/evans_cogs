@@ -42,7 +42,6 @@ class NewsAPI(commands.Cog):
             title=f"{article['source']['name']} - {article['title']}",
             description=f"{article['author']}\n{article['description']}",
             url=article['url'],
-            image=article['urlToImage'],
             color=discord.Color.red()
         )
         embed.set_footer(text=article['publishedAt'])
@@ -64,6 +63,5 @@ class NewsAPI(commands.Cog):
             return await ctx.send("Error.")
         if data["totalResults"] == 0:
             return await ctx.send("No results.")
-        # send 4 embeds of the first 4 articles
         for i in range(4):
-            await ctx.send(embed=await self.news_embed(data["articles"][i]))    
+            await ctx.send(embed=await self.news_embed(article=data["articles"][i]))    
