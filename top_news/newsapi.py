@@ -65,4 +65,4 @@ class NewsAPI(commands.Cog):
             return await ctx.send("No results.")
         for i in range(4):
             embed = await self.news_embed(article=data["articles"][i])
-            await ctx.send(embed=embed)
+            await ctx.send(data["articles"][i])
