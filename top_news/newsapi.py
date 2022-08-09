@@ -6,9 +6,9 @@ from discord.ext import commands
 from redbot.core import commands
 
 
-class Trackmania(commands.Cog):
+class NewsAPI(commands.Cog):
     """
-    Trackmania cog.
+    NewsAPI cog.
     """
 
     __version__ = "0.0.1 beta"
