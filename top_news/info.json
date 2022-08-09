@@ -1,0 +1,21 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Cog-Creators/Red-DiscordBot/V3/develop/schema/red_cog.schema.json",
+    "name": "NewsAPI",
+    "short": "NewsAPI cog.",
+    "description": "NewsAPI cog that pulls information about the news from NewsAPI.",
+    "end_user_data_statement": "This cog does not persistently store any data or metadata about users.",
+    "install_msg": "Thanks.",
+    "author": [
+        "evan_#9999"
+    ],
+    "required_cogs": {},
+    "requirements": [],
+    "tags": [
+        "news",
+        "api"
+    ],
+    "min_bot_version": "3.3.10",
+    "hidden": false,
+    "disabled": false,
+    "type": "COG"
+}
