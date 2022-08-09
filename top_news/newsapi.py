@@ -33,7 +33,7 @@ class NewsAPI(commands.Cog):
         }
         reqtype = self.session.get
         async with reqtype(url, headers=headers) as req:
-            data = req
+            data = req.json()
             status = req.status
         return data, status
     
@@ -60,12 +60,11 @@ class NewsAPI(commands.Cog):
         data, status = await self.req(url)
         if status != 200:
             return await ctx.send("Error: " + str(status))
-        data = data.json()
-        if data[0]["status"] is not "ok":
+        if data["status"] != "ok":
             return await ctx.send("Error.")
-        if data[0]["totalResults"] == 0:
+        if data["totalResults"] == 0:
             return await ctx.send("No results.")
         for i in range(4):
-            article = data[0]["articles"][i]
+            article = data["articles"][i]
             await ctx.send(embed=await self.news_embed(article))
         
