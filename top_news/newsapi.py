@@ -71,5 +71,6 @@ class NewsAPI(commands.Cog):
                 url=article['url'],
                 color=discord.Color.red()
             )
+            embed.set_image(url=article['urlToImage'])
             embed.set_footer(text=article['publishedAt'])
             await ctx.send(embed=embed)
