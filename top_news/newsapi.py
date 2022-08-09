@@ -64,5 +64,12 @@ class NewsAPI(commands.Cog):
         if data["totalResults"] == 0:
             return await ctx.send("No results.")
         for i in range(4):
-            #embed = await self.news_embed(article=data["articles"][i])
-            await ctx.send(data["articles"][i])
+            article = data["articles"][i]
+            embed = discord.Embed(
+                title=f"{article['source']['name']} - {article['title']}",
+                description=f"{article['author']}\n{article['description']}",
+                url=article['url'],
+                color=discord.Color.red()
+            )
+            embed.set_footer(text=article['publishedAt'])
+            await ctx.send(embed=embed)
