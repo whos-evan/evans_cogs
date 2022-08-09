@@ -57,7 +57,7 @@ class NewsAPI(commands.Cog):
     async def topnews(self, ctx, country: str):
         newsapikey = await self.bot.get_shared_api_tokens("newsapi")
         url = "https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=" + newsapikey['apiKey']
-        data, status = await self.req(url, "url")
+        data, status = await self.req(url)
         if status != 200:
             return await ctx.send("Error: " + str(status))
         data = data.json()
