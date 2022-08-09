@@ -92,6 +92,7 @@ class NewsAPI(commands.Cog):
                 color=discord.Color.red()
             )
             embed.set_footer(text=article['publishedAt'])
+            embed.set_image(url=article['urlToImage'])
             embeds.append(embed)
         
         class Dropdown(discord.ui.Select):
