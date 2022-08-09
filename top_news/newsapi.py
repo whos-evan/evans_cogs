@@ -64,7 +64,6 @@ class NewsAPI(commands.Cog):
             return await ctx.send("Error.")
         if data["totalResults"] == 0:
             return await ctx.send("No results.")
+        # send 4 embeds of the first 4 articles
         for i in range(4):
-            article = data["articles"][i]
-            await ctx.send(embed=await self.news_embed(article))
-        
+            await ctx.send(embed=await self.news_embed(data["articles"][i]))    
