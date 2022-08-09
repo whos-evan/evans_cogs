@@ -61,7 +61,7 @@ class NewsAPI(commands.Cog):
         if status != 200:
             return await ctx.send("Error: " + str(status))
         data = data.json()
-        if data["status"] != "ok":
+        if data["status"] is not "ok":
             return await ctx.send("Error.")
         if data["totalResults"] == 0:
             return await ctx.send("No results.")
