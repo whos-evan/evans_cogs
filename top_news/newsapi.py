@@ -59,7 +59,7 @@ class NewsAPI(commands.Cog):
             return
 
         newsapikey = await self.bot.get_shared_api_tokens("newsapi")
-        url = "https://newsapi.org/v2/top-headlines?country=" + country + "pageSize=" + str(number) + "&apiKey=" + newsapikey['apiKey']
+        url = "https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=" + newsapikey['apiKey']
 
         data, status = await self.req(url)
 
