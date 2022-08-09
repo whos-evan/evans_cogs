@@ -33,7 +33,7 @@ class NewsAPI(commands.Cog):
         }
         reqtype = self.session.get
         async with reqtype(url, headers=headers) as req:
-            data = req.json()
+            data = await req.json()
             status = req.status
         return data, status
     
