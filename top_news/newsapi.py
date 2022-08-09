@@ -74,13 +74,10 @@ class NewsAPI(commands.Cog):
 
         options = []
         embeds = []
-        for i in range(len(data["articles"])):
+        for i in range(number):
             # generates the options
             label = f"{str(i)} - {data['articles'][i]['title']}"
-            if len(data['articles'][i]['description']) > 95:
-                description = data['articles'][i]['description'][:95] + "..."
-            else:
-                description = data['articles'][i]['description']
+            description = data['articles'][i]['description'][:95] + "..."
             default = False
             option = discord.SelectOption(label=label, description=description, default=default)
             options.append(option)
