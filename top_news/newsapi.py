@@ -52,7 +52,7 @@ class NewsAPI(commands.Cog):
         """Group for news."""
 
     @news.command(name="top")
-    @commands.cooldown(rate=1, per=25, type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=150, type=commands.BucketType.user)
     async def topnews(self, ctx, country: str):
         newsapikey = await self.bot.get_shared_api_tokens("newsapi")
         url = "https://newsapi.org/v2/top-headlines?country=" + country + "&apiKey=" + newsapikey['apiKey']
@@ -63,7 +63,7 @@ class NewsAPI(commands.Cog):
             return await ctx.send("Error.")
         if data["totalResults"] == 0:
             return await ctx.send("No results.")
-        for i in range(4):
+        for i in range(5):
             article = data["articles"][i]
             embed = discord.Embed(
                 title=f"{article['source']['name']} - {article['title']}",
