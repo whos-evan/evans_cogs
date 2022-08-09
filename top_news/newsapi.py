@@ -77,7 +77,8 @@ class NewsAPI(commands.Cog):
         for i in range(number):
             # generates the options
             label = f"{str(i)} - {data['articles'][i]['title']}"
-            description = data['articles'][i]['description'][:90] + "..."
+            label = label[:95] + '...' if len(label) > 95 else label
+            description = data['articles'][i]['description'][:95] + "..." if len(data['articles'][i]['description']) > 95 else data['articles'][i]['description']
             default = False
             option = discord.SelectOption(label=label, description=description, default=default)
             options.append(option)
