@@ -32,7 +32,7 @@ class YouTubeDownloader(commands.Cog):
     async def ytdownloader(self, ctx):
         """Group for ytdownloader."""
 
-    async def upload(file_path: str):
+    async def upload(file_path):
         """Upload the file to tmpfiles."""
         async with aiohttp.ClientSession() as session:
             async with session.post('https://tmpfiles.org/', data={'file': open(file_path, 'rb')}) as resp:
@@ -48,7 +48,7 @@ class YouTubeDownloader(commands.Cog):
         elif url.startswith('https://www.youtube.com') is True:
             yt = YouTube(url)
             directory = str(cog_data_path(self)) + '/tmp/'
-            full_directory = f'{directory}/{yt.streams.first().default_filename}'
+            full_directory = directory + "/" str(yt.streams.first().default_filename)
             download = yt.streams.first().download(output_path=directory)
             upload = await self.upload(file_path=full_directory)
             # delete the file
