@@ -38,7 +38,7 @@ class YouTubeDownloader(commands.Cog):
             async with session.post('https://tmpfiles.org/', data={'file': open(file_path, 'rb')}) as resp:
                 return await resp.text()
     
-    @commands.commnad('download')
+    @commands.command('download')
     async def download(self, ctx, url: str = None):
         """
         Download a youtube video, must start with ``https://www.youtube.com``
