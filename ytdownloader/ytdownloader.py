@@ -47,7 +47,7 @@ class YouTubeDownloader(commands.Cog):
             await ctx.send("Please provide a url.")
         elif url.startswith('https://www.youtube.com') is True:
             yt = YouTube(url)
-            directory = cog_data_path(self) + '/tmp/'
+            directory = str(cog_data_path(self)) + '/tmp/'
             full_directory = f'{directory}/{yt.streams.first().default_filename}'
             download = yt.streams.first().download(output_path=directory)
             upload = await self.upload(full_directory)
