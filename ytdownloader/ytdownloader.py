@@ -47,7 +47,7 @@ class YouTubeDownloader(commands.Cog):
             download = yt.streams.first().download(output_path=directory)
             async with aiohttp.ClientSession() as session:
                 async with session.post('https://tmpfiles.org/api/v1/upload', data={'file': open(full_directory, 'rb')}) as resp:
-                    await ctx.send(f"Download complete. Link to file: {await resp.text()}")
+                    await ctx.send(f"Download complete. Link to file: {await resp.json()['data']['url']}")
             # delete the file
             os.remove(full_directory)
             
