@@ -47,8 +47,9 @@ class YouTubeDownloader(commands.Cog):
             download = yt.streams.first().download(output_path=directory)
             async with aiohttp.ClientSession() as session:
                 async with session.post('https://tmpfiles.org/api/v1/upload', data={'file': open(full_directory, 'rb')}) as resp:
-                    if await resp.json()['status'] == 'success':
-                        await ctx.send(f"Download complete. Link to file: {await resp.json()['data']['url']}")
+                    response_json = await resp.json()
+                    if response_json['status'] == 'success':
+                        await ctx.send(f"Download complete. Link to file: {response_json['data']['url']}")
                     else:
                         await ctx.send(f"Error, possible that the file was just too big.")
             # delete the file
