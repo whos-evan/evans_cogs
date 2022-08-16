@@ -32,7 +32,7 @@ class YouTubeDownloader(commands.Cog):
     async def ytdownloader(self, ctx):
         """Group for ytdownloader."""
 
-    async def upload(file_path: str):
+    async def upload(self, file_path: str):
         """Upload the file to tmpfiles."""
         async with aiohttp.ClientSession() as session:
             async with session.post('https://tmpfiles.org/', data={'file': open(file_path, 'rb')}) as resp:
