@@ -53,7 +53,8 @@ class YouTubeDownloader(commands.Cog):
                 async with session.post('https://tmpfiles.org/api/v1/upload', data={'file': open(full_directory, 'rb')}) as resp:
                     response_json = await resp.json()
                     if response_json['status'] == 'success':
-                        await ctx.send(f"Download complete. Link to file: {response_json['data']['url']}")
+                        direct_download = response_json['data']['url'].replace('https://tmpfiles.org/', 'https://tmpfiles.org/dl/')
+                        await ctx.send(f"Download complete. Link to file: {direct_download}")
                     else:
                         await ctx.send(f"Error, possible that the file was just too big.")
             # delete the file
