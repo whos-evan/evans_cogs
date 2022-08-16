@@ -48,7 +48,7 @@ class YouTubeDownloader(commands.Cog):
         elif url.startswith('https://www.youtube.com') is True:
             yt = YouTube(url)
             directory = str(cog_data_path(self)) + '/tmp/'
-            full_directory = directory + "/" str(yt.streams.first().default_filename)
+            full_directory = directory + "/" + str(yt.streams.first().default_filename)
             download = yt.streams.first().download(output_path=directory)
             upload = await self.upload(file_path=full_directory)
             # delete the file
