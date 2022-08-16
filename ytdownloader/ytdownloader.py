@@ -34,6 +34,7 @@ class YouTubeDownloader(commands.Cog):
 
     
     @ytdownloader.command('download')
+    @commands.cooldown(1, 120, commands.BucketType.user)
     async def download(self, ctx, url: str = None):
         """
         Download a youtube video, must start with ``https://www.youtube.com``
