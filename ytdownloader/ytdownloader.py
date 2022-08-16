@@ -44,10 +44,9 @@ class YouTubeDownloader(commands.Cog):
             yt = YouTube(url)
             directory = str(cog_data_path(self)) + '/tmp/'
 
-            mp4files = yt.streams.filter(file_extension='mp4')
-            video = yt.get(mp4files[-1].extention, mp4files[-1].resolution)
-            video.download(output_path=directory)
-            
+            mp4files = yt.streams.filter(progressive=True, file_extension='mp4')
+            mp4files.get_lowest_resolution().download(output_path=directory)
+
             full_directory = directory + "/" + str(yt.streams.first().default_filename)
             
             async with aiohttp.ClientSession() as session:
