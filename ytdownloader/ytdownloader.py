@@ -47,7 +47,7 @@ class YouTubeDownloader(commands.Cog):
             mp4files = yt.streams.filter(progressive=True, file_extension='mp4')
             mp4files.get_lowest_resolution().download(output_path=directory)
 
-            full_directory = directory + "/" + str(yt.streams.first().default_filename)
+            full_directory = directory + "/" + str(mp4files.get_lowest_resolution().default_filename)
             
             async with aiohttp.ClientSession() as session:
                 async with session.post('https://tmpfiles.org/api/v1/upload', data={'file': open(full_directory, 'rb')}) as resp:
